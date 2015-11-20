@@ -8,7 +8,7 @@ __author__ = 'ivansemenov'
 
 class SimpleTest(TestCase):
     USEREMAIL = 'stotch_leopold@inbox.ru'
-    PASSWORD = ''
+    PASSWORD = 'testirovanie'
 
     def setUp(self):
         browser = os.environ.get('TTHA2BROWSER', 'CHROME')
@@ -31,3 +31,6 @@ class SimpleTest(TestCase):
         auth_form.set_login(self.USEREMAIL)
         auth_form.set_password(self.PASSWORD)
         auth_form.submit()
+
+        user_email = auth_page.top_menu.get_user_email()
+        self.assertEqual(user_email, self.USEREMAIL)

@@ -56,3 +56,12 @@ class AuthForm(Component):
 
     def submit(self):
         self.driver.find_element_by_xpath(self.SUBMIT).click()
+
+
+class TopMenu(Component):
+    USEREMAIL = '//i[@id="PH_user-email"]'
+
+    def get_user_email(self):
+        return WebDriverWait(self.driver, 30, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.USEREMAIL).text
+        )
