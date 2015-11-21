@@ -91,10 +91,18 @@ class MyRoom(Component):
     #GOTOROOM = '//a[text()="Личный кабинет, Леопольд Стотч"]'
     MY_WORLD_BUTTON = '//a[text()="Мой мир"]'
     MY_WORLD_TITLE = '//a[@class="portal-menu__logo icon-head-logo booster-sc "]' #не забывай пробел на конце, где он есть
+
     MY_PHOTOS_BUTTON = '//a[text()="Фотографии"]'
     MY_VIDEOS_BUTTON = '//a[text()="Видео"]'
+
     MY_VIDEOS_TITLE = '//a[@class="sp-video__head__logo sp-video-icon-head-logo js-router-link"]'
+
     TAKE_VIP_BUTTON = '//span[text()="Получить VIP-статус"]'
+
+    SETINGS_BUTTON = '//a[text()="Настройки"]'
+    #SETINGS_TITLE = '//h1[@class="page-settings-h1"/text()="Настройки"]'
+
+    ACTIVITY_BUTTON = '//a[text()="Активность"]'
 
 
     def go_to_my_world(self):
@@ -130,3 +138,12 @@ class MyRoom(Component):
         print(self.driver.current_url)
 
         return  self.driver.current_url
+
+    def press_settings(self):
+        self.driver.find_element_by_xpath(self.SETINGS_BUTTON).click()
+        return self.driver.current_url
+
+    def press_activity(self):
+        self.driver.find_element_by_xpath(self.ACTIVITY_BUTTON).click()
+        return self.driver.current_url
+

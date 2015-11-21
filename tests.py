@@ -61,12 +61,6 @@ class SimpleTest(TestCase):
         name = top_menu.get_name()
         self.assertEquals(name, self.FIRST_USER_EMAIL)
 
-    # def test_change_avatar(self):
-    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-    #     my_room_page.open()
-    #
-    #     self.auth_of_first_user(my_room_page)
-
 
     def test_go_to_photos(self):
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
@@ -91,5 +85,30 @@ class SimpleTest(TestCase):
         self.assertEquals(href, 'https://my.mail.ru/video')
 
 
+    def test_press_settings_button(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
+
+        self.auth_of_first_user(my_room_page)
+
+        my_room = my_room_page.my_room
+        url = my_room.press_settings()
+        self.assertEquals(url, 'https://otvet.mail.ru/settings')
+
+
+    def test_press_activity_button(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
+
+        self.auth_of_first_user(my_room_page)
+        first_url = self.driver.current_url
+
+        my_room = my_room_page.my_room
+
+        my_room.press_settings()
+        my_room.press_activity()
+
+        second_url = self.driver.current_url
+        self.assertEquals(first_url.encode(), second_url.encode() + '?from=authpopup')
 
 
