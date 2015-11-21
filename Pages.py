@@ -36,6 +36,16 @@ class AuthPage(AnswersPage):
         return TopMenu(self.driver)
 
 
+class MyRoomPage(AnswersPage):
+    PATH = 'profile/id207816682/' # id of stotch_leopold@inbox.ru
+
+    @property
+    def my_room(self):
+        return MyRoom(self.driver)
+
+
+
+
 class AuthForm(Component):
     LOGIN = '//input[@name="Login"]'
     PASSWORD = '//input[@name="Password"]'
@@ -56,3 +66,25 @@ class AuthForm(Component):
 
     def submit(self):
         self.driver.find_element_by_xpath(self.SUBMIT).click()
+
+
+class TopMenu(Component):
+    USERNAME = '//a[text()="Личный кабинет, Леопольд Стотч"]'
+
+    def get_name(self):
+        return WebDriverWait(self.driver, 30, 0.1).until(
+            lambda d: d.find_element_by_id('PH_user-email').text
+        )
+
+
+class MyRoom(Component):
+    #GOTOROOM = '//a[text()="Личный кабинет, Леопольд Стотч"]'
+    MY_WORLD_BUTTON = '//span[text()="Мой Мир"]'
+    MY_WORLD_TITLE = '//a[@class="portal-menu__logo icon-head-logo booster-sc "]' #не забывай пробел на конце, где он есть
+
+    def go_to_my_world(self):
+        self.driver.find_element_by_xpath(self.MY_WORLD_BUTTON).click()
+        return WebDriverWait(self.driver, 50, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
+        )
+
