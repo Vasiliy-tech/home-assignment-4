@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import urlparse
+import time
+import selenium.webdriver as findmethods
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
@@ -13,10 +15,11 @@ class Component(object):
 
 class AnswersPage(object):
     BASE_URL = 'https://otvet.mail.ru/'
-    PATH = ''
 
-    def __init__(self, driver):
+
+    def __init__(self, driver, PATH = ''):
         self.driver = driver
+        self.PATH = PATH
 
     def open(self):
         url = urlparse.urljoin(self.BASE_URL, self.PATH)
@@ -25,7 +28,7 @@ class AnswersPage(object):
 
 
 class AuthPage(AnswersPage):
-    PATH = ''
+    #PATH = ''
 
     @property
     def form(self):
@@ -37,11 +40,15 @@ class AuthPage(AnswersPage):
 
 
 class MyRoomPage(AnswersPage):
-    PATH = 'profile/id207816682/' # id of stotch_leopold@inbox.ru
+    #PATH = 'profile/id207816682/' # id of stotch_leopold@inbox.ru
 
     @property
     def my_room(self):
         return MyRoom(self.driver)
+
+    @property
+    def auth_form(self):
+        return AuthForm(self.driver)
 
 
 
@@ -67,29 +74,32 @@ class AuthForm(Component):
     def submit(self):
         self.driver.find_element_by_xpath(self.SUBMIT).click()
 
-
 class TopMenu(Component):
     USERNAME = '//a[text()="Личный кабинет, Леопольд Стотч"]'
+    AVATAR = '//span[@bem-id="192"]'
 
     def get_name(self):
         return WebDriverWait(self.driver, 30, 0.1).until(
             lambda d: d.find_element_by_id('PH_user-email').text
         )
 
+    def go_to_my_room(self):
+        self.driver.find_element_by_xpath(self.AVATAR).click()
+
 
 class MyRoom(Component):
     #GOTOROOM = '//a[text()="Личный кабинет, Леопольд Стотч"]'
-    MY_WORLD_BUTTON = '//i[@class="icon icon-my_15"]'
+    MY_WORLD_BUTTON = '//a[text()="Мой мир"]'
     MY_WORLD_TITLE = '//a[@class="portal-menu__logo icon-head-logo booster-sc "]' #не забывай пробел на конце, где он есть
-    MY_PHOTOS_BUTTON = '//i[@class="icon icon-photo_14"]'
-    MY_VIDEOS_BUTTON = '//i[@class="icon icon-video_12"]'
+    MY_PHOTOS_BUTTON = '//a[text()="Фотографии"]'
+    MY_VIDEOS_BUTTON = '//a[text()="Видео"]'
     MY_VIDEOS_TITLE = '//a[@class="sp-video__head__logo sp-video-icon-head-logo js-router-link"]'
+    TAKE_VIP_BUTTON = '//span[text()="Получить VIP-статус"]'
 
 
     def go_to_my_world(self):
         self.driver.find_element_by_xpath(self.MY_WORLD_BUTTON).click()
         #self.driver.switch_to_window('http://my.mail.ru/inbox/stotch_leopold/') #не понятно почему не работает
-
         self.driver.switch_to_window(self.driver.window_handles[-1])
         return WebDriverWait(self.driver, 50, 0.1).until(
             lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
@@ -97,6 +107,7 @@ class MyRoom(Component):
 
 
     def go_to_photos(self):
+
         self.driver.find_element_by_xpath(self.MY_PHOTOS_BUTTON).click()
 
         self.driver.switch_to_window(self.driver.window_handles[-1])
@@ -112,3 +123,10 @@ class MyRoom(Component):
         return WebDriverWait(self.driver, 50, 0.1).until(
             lambda d: d.find_element_by_xpath(self.MY_VIDEOS_TITLE).get_attribute('href')
         )
+
+    def take_vip(self):
+        self.driver.find_element_by_xpath(self.TAKE_VIP_BUTTON).click()
+        #self.driver.switch_to_window(self.driver.window_handles[-1])
+        print(self.driver.current_url)
+
+        return  self.driver.current_url

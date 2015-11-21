@@ -8,8 +8,19 @@ __author__ = 'ivansemenov'
 
 
 class SimpleTest(TestCase):
-    PASSWORD = 'testirovanie'
-    USER_EMAIL = 'stotch_leopold@inbox.ru'
+    FIRST_U_PASSWORD = 'testirovanie'
+    FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
+    FIRST_PROFILE_ID = 'profile/id207816682/'
+
+    def auth_of_first_user(self, my_room_page):
+
+        auth_form = my_room_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        self.driver.switch_to_window(self.driver.window_handles[-1]) #почему без этой строчки крашиться не совсем понятно, т.к простая авторизация работает
 
     def setUp(self):
         browser = os.environ.get('TTHA2BROWSER', 'FIREFOX')
@@ -19,37 +30,49 @@ class SimpleTest(TestCase):
             desired_capabilities=getattr(DesiredCapabilities, browser).copy()
         )
 
+
     def tearDown(self):
         time.sleep(1)
         self.driver.quit()
 
-    def test_authorization(self):
-        auth_page = AuthPage(self.driver)
-        auth_page.open()
-
-        auth_form = auth_page.form
-        auth_form.open_form()
-        auth_form.set_login(self.USER_EMAIL)
-        auth_form.set_password(self.PASSWORD)
-        auth_form.submit()
-
-        top_menu = auth_page.top_menu
-        name = top_menu.get_name()
-        self.assertEquals(name, self.USER_EMAIL)
-
-
 
     def test_go_to_MyWorld(self):
-        my_room_page = MyRoomPage(self.driver)
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
+        #print(self.driver.current_url)
+
+        self.auth_of_first_user(my_room_page)
 
         my_room = my_room_page.my_room
         href = my_room.go_to_my_world()
         self.assertEquals(href, 'http://my.mail.ru/')
 
+
+    def test_authorization(self):
+        auth_page = AuthPage(self.driver)
+        auth_page.open()
+        auth_form = auth_page.form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = auth_page.top_menu
+        name = top_menu.get_name()
+        self.assertEquals(name, self.FIRST_USER_EMAIL)
+
+    # def test_change_avatar(self):
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     self.auth_of_first_user(my_room_page)
+
+
     def test_go_to_photos(self):
-        my_room_page = MyRoomPage(self.driver)
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
+
+        self.auth_of_first_user(my_room_page)
 
         my_room = my_room_page.my_room
         href = my_room.go_to_photos()
@@ -57,10 +80,16 @@ class SimpleTest(TestCase):
 
 
     def test_go_to_videos(self):
-        my_room_page = MyRoomPage(self.driver)
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
+
+        self.auth_of_first_user(my_room_page)
 
         my_room = my_room_page.my_room
         href = my_room.go_to_videos()
-        print (href)
-        self.assertEquals(href, 'http://my.mail.ru/video')
+
+        self.assertEquals(href, 'https://my.mail.ru/video')
+
+
+
+
