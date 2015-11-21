@@ -64,7 +64,3 @@ class SimpleTest(TestCase):
         href = my_room.go_to_videos()
         print (href)
         self.assertEquals(href, 'http://my.mail.ru/video')
-
-
-
-
