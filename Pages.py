@@ -40,7 +40,6 @@ class AuthPage(AnswersPage):
 
 
 class MyRoomPage(AnswersPage):
-    #PATH = 'profile/id207816682/' # id of stotch_leopold@inbox.ru
 
     @property
     def my_room(self):
@@ -54,21 +53,26 @@ class MyRoomPage(AnswersPage):
     def top_ask_question(self):
         return AskTop(self.driver)
 
+
 class AskPage(AnswersPage):
+
+    @property
+    def auth_form(self):
+        return AuthForm(self.driver)
+
     @property
     def question_form(self):
         return QuestionForm(self.driver)
 
 
 
-
-
 class QuestionForm(Component):
     ID_TEXT_AREA = 'ask-text'
-    SEC_TEXT_PATH = '//taxtarea[@placeholder="Введите текст пояснения"]'
-    QUESTION_TEXT = 'Как перекличится на iframe в Selenium, если у него нет имени и по xpath его не найти?'
-    SECOND_TEXT = 'ЯП python'
+    SEC_TEXT_PATH = '//*[@id="ColumnCenter"]/div/div/form/div[3]/div/div[1]/div/textarea'
+    QUESTION_TEXT = u'Как переключиться на iframe в Selenium, если у него нет имени и по xpath его не найти?'
+    SECOND_TEXT = u'ЯП python'
 
+    #не закончил тест задать вопрос
     def ask_question(self):
         #findmethods.Firefox.find_element_by_id('f').send_keys()
         self.driver.find_element_by_id(self.ID_TEXT_AREA).send_keys(self.QUESTION_TEXT)
@@ -126,7 +130,6 @@ class TopMenu(Component):
 
 
 class MyRoom(Component):
-    #GOTOROOM = '//a[text()="Личный кабинет, Леопольд Стотч"]'
     MY_WORLD_BUTTON = '//a[text()="Мой мир"]'
     MY_WORLD_TITLE = '//a[@class="portal-menu__logo icon-head-logo booster-sc "]' #не забывай пробел на конце, где он есть
 
@@ -139,12 +142,12 @@ class MyRoom(Component):
     VIP_TITLE = '//span[text()="1. Ваш заказ: Продление VIP статуса на 10 дней [100.00 руб.]"]'
 
     SETINGS_BUTTON = '//a[text()="Настройки"]'
-    #SETINGS_TITLE = '//h1[@class="page-settings-h1"/text()="Настройки"]'
 
     ACTIVITY_BUTTON = '//a[text()="Активность"]'
 
 
     def go_to_my_world(self):
+
         self.driver.find_element_by_xpath(self.MY_WORLD_BUTTON).click()
         #self.driver.switch_to_window('http://my.mail.ru/inbox/stotch_leopold/') #не понятно почему не работает
         self.driver.switch_to_window(self.driver.window_handles[-1])
@@ -177,7 +180,6 @@ class MyRoom(Component):
         print(self.driver.window_handles)
         #self.driver.switch_to_frame("relative=top")
         self.driver.switch_to.frame(self.driver.find_element(By.XPATH, "/html/body/div[3]/div/div[2]/iframe"));
-        #findmethods.Firefox.find_element_by_link_text()
 
         self.driver.find_element_by_xpath(self.VIP_TITLE)
         print (self.driver.find_element_by_xpath(self.VIP_TITLE).text)
