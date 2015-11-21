@@ -79,12 +79,36 @@ class TopMenu(Component):
 
 class MyRoom(Component):
     #GOTOROOM = '//a[text()="Личный кабинет, Леопольд Стотч"]'
-    MY_WORLD_BUTTON = '//span[text()="Мой Мир"]'
+    MY_WORLD_BUTTON = '//i[@class="icon icon-my_15"]'
     MY_WORLD_TITLE = '//a[@class="portal-menu__logo icon-head-logo booster-sc "]' #не забывай пробел на конце, где он есть
+    MY_PHOTOS_BUTTON = '//i[@class="icon icon-photo_14"]'
+    MY_VIDEOS_BUTTON = '//i[@class="icon icon-video_12"]'
+    MY_VIDEOS_TITLE = '//a[@class="sp-video__head__logo sp-video-icon-head-logo js-router-link"]'
+
 
     def go_to_my_world(self):
         self.driver.find_element_by_xpath(self.MY_WORLD_BUTTON).click()
+        #self.driver.switch_to_window('http://my.mail.ru/inbox/stotch_leopold/') #не понятно почему не работает
+
+        self.driver.switch_to_window(self.driver.window_handles[-1])
         return WebDriverWait(self.driver, 50, 0.1).until(
             lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
         )
 
+
+    def go_to_photos(self):
+        self.driver.find_element_by_xpath(self.MY_PHOTOS_BUTTON).click()
+
+        self.driver.switch_to_window(self.driver.window_handles[-1])
+        return WebDriverWait(self.driver, 50, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
+        )
+
+
+    def go_to_videos(self):
+        self.driver.find_element_by_xpath(self.MY_VIDEOS_BUTTON).click()
+
+        self.driver.switch_to_window(self.driver.window_handles[-1])
+        return WebDriverWait(self.driver, 50, 0.1).until(
+            lambda d: d.find_element_by_xpath(self.MY_VIDEOS_TITLE).get_attribute('href')
+        )

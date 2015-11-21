@@ -45,11 +45,25 @@ class SimpleTest(TestCase):
 
         my_room = my_room_page.my_room
         href = my_room.go_to_my_world()
-        self.assertEquals(href, 'https://my.mail.ru/')
+        self.assertEquals(href, 'http://my.mail.ru/')
+
+    def test_go_to_photos(self):
+        my_room_page = MyRoomPage(self.driver)
+        my_room_page.open()
+
+        my_room = my_room_page.my_room
+        href = my_room.go_to_photos()
+        self.assertEquals(href, 'http://my.mail.ru/')
 
 
+    def test_go_to_videos(self):
+        my_room_page = MyRoomPage(self.driver)
+        my_room_page.open()
 
-
+        my_room = my_room_page.my_room
+        href = my_room.go_to_videos()
+        print (href)
+        self.assertEquals(href, 'http://my.mail.ru/video')
 
 
 
