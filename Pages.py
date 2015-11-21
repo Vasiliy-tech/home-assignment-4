@@ -50,7 +50,41 @@ class MyRoomPage(AnswersPage):
     def auth_form(self):
         return AuthForm(self.driver)
 
+    @property
+    def top_ask_question(self):
+        return AskTop(self.driver)
 
+class AskPage(AnswersPage):
+    @property
+    def question_form(self):
+        return QuestionForm(self.driver)
+
+
+
+
+
+class QuestionForm(Component):
+    ID_TEXT_AREA = 'ask-text'
+    SEC_TEXT_PATH = '//taxtarea[@placeholder="Введите текст пояснения"]'
+    QUESTION_TEXT = 'Как перекличится на iframe в Selenium, если у него нет имени и по xpath его не найти?'
+    SECOND_TEXT = 'ЯП python'
+
+    def ask_question(self):
+        #findmethods.Firefox.find_element_by_id('f').send_keys()
+        self.driver.find_element_by_id(self.ID_TEXT_AREA).send_keys(self.QUESTION_TEXT)
+        self.driver.find_element_by_xpath(self.SEC_TEXT_PATH).send_keys(self.SECOND_TEXT)
+
+
+
+
+
+class AskTop(Component):
+    ASK_QUESTION_BUTTON = '//span[text()="Спросить"]'
+
+    def ask_question_button(self):
+        self.driver.find_element_by_xpath(self.ASK_QUESTION_BUTTON).click()
+        self.driver.switch_to_window(self.driver.window_handles[-1])
+        return self.driver.current_url
 
 
 class AuthForm(Component):
@@ -74,6 +108,8 @@ class AuthForm(Component):
     def submit(self):
         self.driver.find_element_by_xpath(self.SUBMIT).click()
 
+
+
 class TopMenu(Component):
     USERNAME = '//a[text()="Личный кабинет, Леопольд Стотч"]'
     AVATAR = '//span[@bem-id="192"]'
@@ -87,6 +123,8 @@ class TopMenu(Component):
         self.driver.find_element_by_xpath(self.AVATAR).click()
 
 
+
+
 class MyRoom(Component):
     #GOTOROOM = '//a[text()="Личный кабинет, Леопольд Стотч"]'
     MY_WORLD_BUTTON = '//a[text()="Мой мир"]'
@@ -98,6 +136,7 @@ class MyRoom(Component):
     MY_VIDEOS_TITLE = '//a[@class="sp-video__head__logo sp-video-icon-head-logo js-router-link"]'
 
     TAKE_VIP_BUTTON = '//span[text()="Получить VIP-статус"]'
+    VIP_TITLE = '//span[text()="1. Ваш заказ: Продление VIP статуса на 10 дней [100.00 руб.]"]'
 
     SETINGS_BUTTON = '//a[text()="Настройки"]'
     #SETINGS_TITLE = '//h1[@class="page-settings-h1"/text()="Настройки"]'
@@ -134,8 +173,16 @@ class MyRoom(Component):
 
     def take_vip(self):
         self.driver.find_element_by_xpath(self.TAKE_VIP_BUTTON).click()
-        #self.driver.switch_to_window(self.driver.window_handles[-1])
-        print(self.driver.current_url)
+        self.driver.implicitly_wait(5)
+        print(self.driver.window_handles)
+        #self.driver.switch_to_frame("relative=top")
+        self.driver.switch_to.frame(self.driver.find_element(By.XPATH, "/html/body/div[3]/div/div[2]/iframe"));
+        #findmethods.Firefox.find_element_by_link_text()
+
+        self.driver.find_element_by_xpath(self.VIP_TITLE)
+        print (self.driver.find_element_by_xpath(self.VIP_TITLE).text)
+
+
 
         return  self.driver.current_url
 
