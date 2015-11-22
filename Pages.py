@@ -5,6 +5,7 @@ import selenium.webdriver as findmethods
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
+
 __author__ = 'ivansemenov'
 
 
@@ -53,6 +54,10 @@ class MyRoomPage(AnswersPage):
     def top_ask_question(self):
         return AskTop(self.driver)
 
+    @property
+    def center_form(self):
+        return CenterForm(self.driver)
+
 
 class AskPage(AnswersPage):
 
@@ -65,18 +70,62 @@ class AskPage(AnswersPage):
         return QuestionForm(self.driver)
 
 
+class CenterForm(Component):
+    LAST_QUEST = '//*[@id="ColumnCenter"]/div/div/div[4]/div[1]/a'
+    QUEST_IN_OPEN = '//*[@id="ColumnCenter"]/div/div/div[4]/div[1]/a'
+    OPEN_BUTTON = '//*[@id="ColumnCenter"]/div/div/div[3]/div/a[2]'
+
+    def wait_element(self, element):
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.presence_of_element_located((By.XPATH, element))
+        )
+
+    def last_quest_in_all(self):
+        self.wait_element(self.LAST_QUEST)
+        return self.driver.find_element_by_xpath(self.LAST_QUEST).get_attribute("href")
+
+    def go_to_open_question(self):
+        self.driver.find_element_by_xpath(self.OPEN_BUTTON).click()
+
+    def last_quest_in_open(self):
+        self.wait_element(self.QUEST_IN_OPEN)
+        return self.driver.find_element_by_xpath(self.QUEST_IN_OPEN).get_attribute("href")
+
+
 
 class QuestionForm(Component):
     ID_TEXT_AREA = 'ask-text'
     SEC_TEXT_PATH = '//*[@id="ColumnCenter"]/div/div/form/div[3]/div/div[1]/div/textarea'
-    QUESTION_TEXT = u'Как переключиться на iframe в Selenium, если у него нет имени и по xpath его не найти?'
-    SECOND_TEXT = u'ЯП python'
+    CATEGORY = '//*[@id="ask-categories"]'
+    SUB_CATEGORY = '//*[@id="ask-sub-category"]'
+    OPTION = "/option[text()='%s']"
+    QUESTION_BUTTON ='//span[text()="Опубликовать вопрос"]'
 
-    #не закончил тест задать вопрос
-    def ask_question(self):
-        #findmethods.Firefox.find_element_by_id('f').send_keys()
-        self.driver.find_element_by_id(self.ID_TEXT_AREA).send_keys(self.QUESTION_TEXT)
-        self.driver.find_element_by_xpath(self.SEC_TEXT_PATH).send_keys(self.SECOND_TEXT)
+    NEW_PAGE = '//*[@id="ColumnCenter"]/div/div[2]/div[1]/h1/index/text()'
+
+    def set_question(self, question, second_text):
+        self.driver.find_element_by_id(self.ID_TEXT_AREA).send_keys(question)
+        self.driver.find_element_by_xpath(self.SEC_TEXT_PATH).send_keys(second_text)
+
+    def set_category(self, category_name):
+        self.driver.find_element_by_xpath(self.CATEGORY + (self.OPTION % category_name)).click()
+        WebDriverWait(self.driver, 30).until(
+            expected_conditions.presence_of_element_located((By.XPATH, self.SUB_CATEGORY))
+        )
+
+    def set_subcategory(self, subcategory_name):
+        self.driver.find_element_by_xpath(self.SUB_CATEGORY + (self.OPTION % subcategory_name)).click()
+
+    def publicate_question(self):
+        self.driver.find_element_by_xpath(self.QUESTION_BUTTON).click()
+
+    def get_url_question(self):
+        self.driver.switch_to_window(self.driver.window_handles[-1])
+        # WebDriverWait(self.driver, 5).until(
+        #     expected_conditions.presence_of_element_located((By.XPATH, self.NEW_PAGE))
+        # )
+
+        return self.driver.current_url
 
 
 
@@ -91,6 +140,7 @@ class AskTop(Component):
         return self.driver.current_url
 
 
+
 class AuthForm(Component):
     LOGIN = '//input[@name="Login"]'
     PASSWORD = '//input[@name="Password"]'
@@ -98,12 +148,18 @@ class AuthForm(Component):
     SUBMIT = '//input[@value="Войти"]'
     LOGIN_BUTTON = '//a[text()="Вход"]'
 
+    def wait_element(self, element):
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.presence_of_element_located((By.XPATH, element))
+        )
+
     def open_form(self):
         self.driver.find_element_by_xpath(self.LOGIN_BUTTON).click()
         wait = WebDriverWait(self.driver, 5)
         wait.until(expected_conditions.element_to_be_clickable((By.XPATH, self.SIGNUP)))
 
     def set_login(self, login):
+        self.wait_element(self.LOGIN)
         self.driver.find_element_by_xpath(self.LOGIN).send_keys(login)
 
     def set_password(self, pwd):
@@ -111,6 +167,7 @@ class AuthForm(Component):
 
     def submit(self):
         self.driver.find_element_by_xpath(self.SUBMIT).click()
+
 
 
 
@@ -155,7 +212,6 @@ class MyRoom(Component):
             lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
         )
 
-
     def go_to_photos(self):
 
         self.driver.find_element_by_xpath(self.MY_PHOTOS_BUTTON).click()
@@ -165,7 +221,6 @@ class MyRoom(Component):
             lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
         )
 
-
     def go_to_videos(self):
         self.driver.find_element_by_xpath(self.MY_VIDEOS_BUTTON).click()
 
@@ -174,6 +229,17 @@ class MyRoom(Component):
             lambda d: d.find_element_by_xpath(self.MY_VIDEOS_TITLE).get_attribute('href')
         )
 
+    def press_settings(self):
+        self.driver.find_element_by_xpath(self.SETINGS_BUTTON).click()
+        return self.driver.current_url
+
+    def press_activity(self):
+        self.driver.find_element_by_xpath(self.ACTIVITY_BUTTON).click()
+        return self.driver.current_url
+
+
+
+    #метод не работает
     def take_vip(self):
         self.driver.find_element_by_xpath(self.TAKE_VIP_BUTTON).click()
         self.driver.implicitly_wait(5)
@@ -187,12 +253,4 @@ class MyRoom(Component):
 
 
         return  self.driver.current_url
-
-    def press_settings(self):
-        self.driver.find_element_by_xpath(self.SETINGS_BUTTON).click()
-        return self.driver.current_url
-
-    def press_activity(self):
-        self.driver.find_element_by_xpath(self.ACTIVITY_BUTTON).click()
-        return self.driver.current_url
 
