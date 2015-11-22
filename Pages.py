@@ -16,20 +16,20 @@ class Component(object):
 
 class AnswersPage(object):
     BASE_URL = 'https://otvet.mail.ru/'
+    PATH = ''
 
-
-    def __init__(self, driver, PATH = ''):
+    def __init__(self, driver):
         self.driver = driver
-        self.PATH = PATH
 
     def open(self):
         url = urlparse.urljoin(self.BASE_URL, self.PATH)
+        print(url)
         self.driver.get(url)
         self.driver.maximize_window()
 
 
 class AuthPage(AnswersPage):
-    #PATH = ''
+    PATH = ''
 
     @property
     def form(self):
@@ -39,8 +39,18 @@ class AuthPage(AnswersPage):
     def top_menu(self):
         return TopMenu(self.driver)
 
+    def login(self, login, password):
+        auth_form = self.form
+        auth_form.open_form()
+        auth_form.set_login(login)
+        auth_form.set_password(password)
+        auth_form.submit()
+
+        return self
+
 
 class MyRoomPage(AnswersPage):
+    PATH = ''
 
     @property
     def my_room(self):
@@ -60,6 +70,7 @@ class MyRoomPage(AnswersPage):
 
 
 class AskPage(AnswersPage):
+    PATH = '/ask/'
 
     @property
     def auth_form(self):
@@ -68,7 +79,6 @@ class AskPage(AnswersPage):
     @property
     def question_form(self):
         return QuestionForm(self.driver)
-
 
 class CenterForm(Component):
     LAST_QUEST = '//*[@id="ColumnCenter"]/div/div/div[4]/div[1]/a'
@@ -92,14 +102,13 @@ class CenterForm(Component):
         return self.driver.find_element_by_xpath(self.QUEST_IN_OPEN).get_attribute("href")
 
 
-
 class QuestionForm(Component):
     ID_TEXT_AREA = 'ask-text'
     SEC_TEXT_PATH = '//*[@id="ColumnCenter"]/div/div/form/div[3]/div/div[1]/div/textarea'
     CATEGORY = '//*[@id="ask-categories"]'
     SUB_CATEGORY = '//*[@id="ask-sub-category"]'
     OPTION = "/option[text()='%s']"
-    QUESTION_BUTTON ='//span[text()="Опубликовать вопрос"]'
+    QUESTION_BUTTON = '//span[text()="Опубликовать вопрос"]'
 
     NEW_PAGE = '//*[@id="ColumnCenter"]/div/div[2]/div[1]/h1/index/text()'
 
@@ -172,24 +181,31 @@ class AuthForm(Component):
 
 
 class TopMenu(Component):
-    USERNAME = '//a[text()="Личный кабинет, Леопольд Стотч"]'
-    AVATAR = '//span[@bem-id="192"]'
+    USEREMAIL = '//i[@id="PH_user-email"]'
+    AVATAR = '//a[starts-with(@title, "Личный кабинет")]'
 
     def get_name(self):
         return WebDriverWait(self.driver, 30, 0.1).until(
-            lambda d: d.find_element_by_id('PH_user-email').text
+            lambda d: d.find_element_by_xpath(self.USEREMAIL).text
         )
 
     def go_to_my_room(self):
+        wait = WebDriverWait(self.driver, 5)
+        wait.until(expected_conditions.element_to_be_clickable((By.XPATH, self.AVATAR)))
         self.driver.find_element_by_xpath(self.AVATAR).click()
+        href = WebDriverWait(self.driver, 30, 0.1).until(
+             lambda d: d.find_element_by_xpath(self.AVATAR).get_attribute('href'))
+        return MyRoomPage(self.driver, href)
 
 
 
 
 class MyRoom(Component):
     MY_WORLD_BUTTON = '//a[text()="Мой мир"]'
-    MY_WORLD_TITLE = '//a[@class="portal-menu__logo icon-head-logo booster-sc "]' #не забывай пробел на конце, где он есть
+    MY_WORLD_TITLE = '//span[@class="portal-menu__block "]/a'
+    MY_WORLD_NAME_USER = '//h1'
 
+    MY_WORLD_CATEGORY = '//div[@class="b-navigation__page-name"]'
     MY_PHOTOS_BUTTON = '//a[text()="Фотографии"]'
     MY_VIDEOS_BUTTON = '//a[text()="Видео"]'
 
@@ -202,18 +218,21 @@ class MyRoom(Component):
 
     ACTIVITY_BUTTON = '//a[text()="Активность"]'
 
-
     def go_to_my_world(self):
-
+        wait = WebDriverWait(self.driver, 5)
+        wait.until(expected_conditions.element_to_be_clickable((By.XPATH, self.MY_WORLD_BUTTON)))
         self.driver.find_element_by_xpath(self.MY_WORLD_BUTTON).click()
-        #self.driver.switch_to_window('http://my.mail.ru/inbox/stotch_leopold/') #не понятно почему не работает
         self.driver.switch_to_window(self.driver.window_handles[-1])
-        return WebDriverWait(self.driver, 50, 0.1).until(
+        return WebDriverWait(self.driver, 30, 0.1).until(
             lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
         )
 
-    def go_to_photos(self):
+    def get_name_on_my_world(self):
+        return self.driver.find_element_by_xpath(self.MY_WORLD_NAME_USER).text
 
+    def go_to_photos(self):
+        wait = WebDriverWait(self.driver, 5)
+        wait.until(expected_conditions.element_to_be_clickable((By.XPATH, self.MY_PHOTOS_BUTTON)))
         self.driver.find_element_by_xpath(self.MY_PHOTOS_BUTTON).click()
 
         self.driver.switch_to_window(self.driver.window_handles[-1])
@@ -221,11 +240,16 @@ class MyRoom(Component):
             lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
         )
 
+    def get_title_on_photos(self):
+        return self.driver.find_element_by_xpath(self.MY_WORLD_CATEGORY).text
+
     def go_to_videos(self):
+        wait = WebDriverWait(self.driver, 5)
+        wait.until(expected_conditions.element_to_be_clickable((By.XPATH, self.MY_VIDEOS_BUTTON)))
         self.driver.find_element_by_xpath(self.MY_VIDEOS_BUTTON).click()
 
         self.driver.switch_to_window(self.driver.window_handles[-1])
-        return WebDriverWait(self.driver, 50, 0.1).until(
+        return WebDriverWait(self.driver, 30, 0.1).until(
             lambda d: d.find_element_by_xpath(self.MY_VIDEOS_TITLE).get_attribute('href')
         )
 
@@ -237,20 +261,4 @@ class MyRoom(Component):
         self.driver.find_element_by_xpath(self.ACTIVITY_BUTTON).click()
         return self.driver.current_url
 
-
-
-    #метод не работает
-    def take_vip(self):
-        self.driver.find_element_by_xpath(self.TAKE_VIP_BUTTON).click()
-        self.driver.implicitly_wait(5)
-        print(self.driver.window_handles)
-        #self.driver.switch_to_frame("relative=top")
-        self.driver.switch_to.frame(self.driver.find_element(By.XPATH, "/html/body/div[3]/div/div[2]/iframe"));
-
-        self.driver.find_element_by_xpath(self.VIP_TITLE)
-        print (self.driver.find_element_by_xpath(self.VIP_TITLE).text)
-
-
-
-        return  self.driver.current_url
 
