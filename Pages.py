@@ -17,7 +17,6 @@ class Component(object):
 class AnswersPage(object):
     BASE_URL = 'https://otvet.mail.ru/'
 
-
     def __init__(self, driver, PATH = ''):
         self.driver = driver
         self.PATH = PATH
@@ -29,7 +28,6 @@ class AnswersPage(object):
 
 
 class AuthPage(AnswersPage):
-    #PATH = ''
 
     @property
     def form(self):
@@ -92,7 +90,6 @@ class CenterForm(Component):
         return self.driver.find_element_by_xpath(self.QUEST_IN_OPEN).get_attribute("href")
 
 
-
 class QuestionForm(Component):
     ID_TEXT_AREA = 'ask-text'
     SEC_TEXT_PATH = '//*[@id="ColumnCenter"]/div/div/form/div[3]/div/div[1]/div/textarea'
@@ -121,14 +118,8 @@ class QuestionForm(Component):
 
     def get_url_question(self):
         self.driver.switch_to_window(self.driver.window_handles[-1])
-        # WebDriverWait(self.driver, 5).until(
-        #     expected_conditions.presence_of_element_located((By.XPATH, self.NEW_PAGE))
-        # )
 
         return self.driver.current_url
-
-
-
 
 
 class AskTop(Component):
@@ -138,7 +129,6 @@ class AskTop(Component):
         self.driver.find_element_by_xpath(self.ASK_QUESTION_BUTTON).click()
         self.driver.switch_to_window(self.driver.window_handles[-1])
         return self.driver.current_url
-
 
 
 class AuthForm(Component):
@@ -169,8 +159,6 @@ class AuthForm(Component):
         self.driver.find_element_by_xpath(self.SUBMIT).click()
 
 
-
-
 class TopMenu(Component):
     USERNAME = '//a[text()="Личный кабинет, Леопольд Стотч"]'
     AVATAR = '//span[@bem-id="192"]'
@@ -184,11 +172,9 @@ class TopMenu(Component):
         self.driver.find_element_by_xpath(self.AVATAR).click()
 
 
-
-
 class MyRoom(Component):
     MY_WORLD_BUTTON = '//a[text()="Мой мир"]'
-    MY_WORLD_TITLE = '//a[@class="portal-menu__logo icon-head-logo booster-sc "]' #не забывай пробел на конце, где он есть
+    MY_WORLD_TITLE = '//a[@class="portal-menu__logo icon-head-logo booster-sc "]'
 
     MY_PHOTOS_BUTTON = '//a[text()="Фотографии"]'
     MY_VIDEOS_BUTTON = '//a[text()="Видео"]'
@@ -202,11 +188,9 @@ class MyRoom(Component):
 
     ACTIVITY_BUTTON = '//a[text()="Активность"]'
 
-
     def go_to_my_world(self):
 
         self.driver.find_element_by_xpath(self.MY_WORLD_BUTTON).click()
-        #self.driver.switch_to_window('http://my.mail.ru/inbox/stotch_leopold/') #не понятно почему не работает
         self.driver.switch_to_window(self.driver.window_handles[-1])
         return WebDriverWait(self.driver, 50, 0.1).until(
             lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
@@ -236,21 +220,4 @@ class MyRoom(Component):
     def press_activity(self):
         self.driver.find_element_by_xpath(self.ACTIVITY_BUTTON).click()
         return self.driver.current_url
-
-
-
-    #метод не работает
-    def take_vip(self):
-        self.driver.find_element_by_xpath(self.TAKE_VIP_BUTTON).click()
-        self.driver.implicitly_wait(5)
-        print(self.driver.window_handles)
-        #self.driver.switch_to_frame("relative=top")
-        self.driver.switch_to.frame(self.driver.find_element(By.XPATH, "/html/body/div[3]/div/div[2]/iframe"));
-
-        self.driver.find_element_by_xpath(self.VIP_TITLE)
-        print (self.driver.find_element_by_xpath(self.VIP_TITLE).text)
-
-
-
-        return  self.driver.current_url
 
