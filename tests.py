@@ -8,29 +8,17 @@ __author__ = 'ivansemenov'
 
 
 class SimpleTest(TestCase):
-    FIRST_U_PASSWORD = 'testirovanie'
+    FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
     FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
     FIRST_PROFILE_ID = 'profile/id207816682/'
 
-    SECOND_U_PASSWORD = 'testirovanie'
+    SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
     SECOND_U_EMAIL = 'lepold.kot@mail.ru'
 
     QUESTION_TEXT = u'Traceback most я на iframe в Selenium?'
     SECOND_TEXT = u'FAIL: test_ask_question (tests.SimpleTest)по xpath его не найти'
     CATEGORY_NAME = 'Программирование'
     SUBCATEGORY_NAME = 'JavaScript'
-
-
-    # def authorization(self, email, password):
-    #     auth_page = AuthPage(self.driver)
-    #     auth_page.open()
-    #
-    #     auth_form = auth_page.form
-    #     auth_form.open_form()
-    #     auth_form.set_login(email)
-    #     auth_form.set_password(password)
-    #     auth_form.submit()
-
 
 
     def auth_of_user(self, my_room_page):
@@ -41,7 +29,7 @@ class SimpleTest(TestCase):
         auth_form.set_password(self.FIRST_U_PASSWORD)
         auth_form.submit()
 
-        self.driver.switch_to_window(self.driver.window_handles[-1]) #почему без этой строчки крашиться не совсем понятно, т.к простая авторизация работает
+        self.driver.switch_to_window(self.driver.window_handles[-1])
 
     def auth_user_askpage(self, page):
         auth_form = page.auth_form
@@ -60,33 +48,29 @@ class SimpleTest(TestCase):
             desired_capabilities=getattr(DesiredCapabilities, browser).copy()
         )
 
-        #self.authorization(self.FIRST_USER_EMAIL, self.FIRST_U_PASSWORD) #почему-то всеравно каждый раз нужно заеово регистрироваться
-
 
     def tearDown(self):
         time.sleep(1)
         self.driver.quit()
 
-    #Возможно его седует разбить на два теста
-    #тест публикует вопрос и проверяет его наличие во вкладках заданные и открытые в личном кабинете
+
     def test_ask_question(self):
          ask_page = AskPage(self.driver, PATH='ask')
          ask_page.open()
 
-         self.auth_user_askpage(ask_page) # другая автоизация т.к. кргда срузу открываешь страницу и форма логина уже всплывает сма
+         self.auth_user_askpage(ask_page)
 
          ask_form = ask_page.question_form
          ask_form.set_question(self.QUESTION_TEXT, self.SECOND_TEXT)
          ask_form.set_category(self.CATEGORY_NAME)
          ask_form.set_subcategory(self.SUBCATEGORY_NAME)
          ask_form.publicate_question()
-         time.sleep(10)  #бывает нужно ввести капчу, еще нужно менять вопросы
+         time.sleep(10)
          url_question = ask_form.get_url_question()
 
          my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
          my_room_page.open()
 
-         #self.auth_of_user(my_room_page)
 
          center_form = my_room_page.center_form
 
@@ -104,7 +88,7 @@ class SimpleTest(TestCase):
 
 
     def test_ask_question_button(self):
-        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID) # второй параметр не обязателен PATH=''
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
 
         self.auth_of_user(my_room_page)
@@ -189,16 +173,6 @@ class SimpleTest(TestCase):
 
         second_url = self.driver.current_url
         self.assertEquals(first_url.encode(), second_url.encode() + '?from=authpopup')
-
-    # не рабочий тест
-    # def test_take_vip(self):
-    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-    #     my_room_page.open()
-    #
-    #     self.auth_of_first_user(my_room_page)
-    #
-    #     my_room = my_room_page.my_room
-    #     my_room.take_vip()
 
 
 
