@@ -8,13 +8,11 @@ __author__ = 'ivansemenov'
 
 
 class SimpleTest(TestCase):
-    #FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
-    FIRST_U_PASSWORD = 'testirovanie'
+    FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
     FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
     FIRST_PROFILE_ID = 'profile/id207816682/'
 
-    #SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
-    SECOND_U_PASSWORD = 'testirovanie'
+    SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
     SECOND_U_EMAIL = 'lepold.kot@mail.ru'
 
     QUESTION_TEXT = u'Количество вопросов iframe в Selenium?'
