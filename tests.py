@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
 import os
 import time
-from Pages import *
+from Pages import  AskPage, MyRoomPage, AuthPage
 from unittest import TestCase
 from selenium.webdriver import DesiredCapabilities, Remote
 __author__ = 'ivansemenov'
 
 
 class SimpleTest(TestCase):
-    FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
+    #FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
+    FIRST_U_PASSWORD = 'testirovanie'
     FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
     FIRST_PROFILE_ID = 'profile/id207816682/'
 
-    SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
+    #SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
+    SECOND_U_PASSWORD = 'testirovanie'
     SECOND_U_EMAIL = 'lepold.kot@mail.ru'
 
-    QUESTION_TEXT = u'Traceback most я на iframe в Selenium?'
-    SECOND_TEXT = u'FAIL: test_ask_question (tests.SimpleTest)по xpath его не найти'
+    QUESTION_TEXT = u'Количество вопросов iframe в Selenium?'
+    SECOND_TEXT = u'Зачем Всего у вас 97 баллов, вы можете заработать больше? Количество вопросов в сутки зависит от вашего уровня'
     CATEGORY_NAME = 'Программирование'
     SUBCATEGORY_NAME = 'JavaScript'
 
@@ -50,7 +52,6 @@ class SimpleTest(TestCase):
 
 
     def tearDown(self):
-        time.sleep(1)
         self.driver.quit()
 
 
@@ -65,7 +66,7 @@ class SimpleTest(TestCase):
          ask_form.set_category(self.CATEGORY_NAME)
          ask_form.set_subcategory(self.SUBCATEGORY_NAME)
          ask_form.publicate_question()
-         time.sleep(10)
+         #time.sleep(10)
          url_question = ask_form.get_url_question()
 
          my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
@@ -122,6 +123,7 @@ class SimpleTest(TestCase):
 
         top_menu = auth_page.top_menu
         name = top_menu.get_name()
+        print (name)
         self.assertEquals(name, self.FIRST_USER_EMAIL)
 
 

@@ -69,9 +69,9 @@ class AskPage(AnswersPage):
 
 
 class CenterForm(Component):
-    LAST_QUEST = '//*[@id="ColumnCenter"]/div/div/div[4]/div[1]/a'
-    QUEST_IN_OPEN = '//*[@id="ColumnCenter"]/div/div/div[4]/div[1]/a'
-    OPEN_BUTTON = '//*[@id="ColumnCenter"]/div/div/div[3]/div/a[2]'
+    LAST_QUEST = '//div[@class="page-profile-list"]/div[1]/a'
+    QUEST_IN_OPEN = '//div[@class="page-profile-list"]/div[1]/a'
+    OPEN_BUTTON = '//div[@class="tabs--h"]/a[2]'
 
     def wait_element(self, element):
         WebDriverWait(self.driver, 10).until(
@@ -92,7 +92,7 @@ class CenterForm(Component):
 
 class QuestionForm(Component):
     ID_TEXT_AREA = 'ask-text'
-    SEC_TEXT_PATH = '//*[@id="ColumnCenter"]/div/div/form/div[3]/div/div[1]/div/textarea'
+    SEC_TEXT_PATH = '//*[@placeholder="Введите текст пояснения"]'
     CATEGORY = '//*[@id="ask-categories"]'
     SUB_CATEGORY = '//*[@id="ask-sub-category"]'
     OPTION = "/option[text()='%s']"
