@@ -78,7 +78,12 @@ class CenterForm(Component):
             expected_conditions.presence_of_element_located((By.XPATH, element))
         )
 
-    def last_quest_in_all(self):
+    def wait_element_of_click(self, element):
+        WebDriverWait(self.driver, 30).until(
+            expected_conditions.element_to_be_clickable((By.XPATH, element))
+        )
+
+    def last_quest__all(self):
         self.wait_element(self.LAST_QUEST)
         return self.driver.find_element_by_xpath(self.LAST_QUEST).get_attribute("href")
 
@@ -100,7 +105,13 @@ class QuestionForm(Component):
 
     NEW_PAGE = '//*[@id="ColumnCenter"]/div/div[2]/div[1]/h1/index/text()'
 
+    def wait_element(self, element):
+        WebDriverWait(self.driver, 30).until(
+            expected_conditions.presence_of_element_located((By.XPATH, element))
+        )
+
     def set_question(self, question, second_text):
+        #self.wait_element(self.ID_TEXT_AREA)
         self.driver.find_element_by_id(self.ID_TEXT_AREA).send_keys(question)
         self.driver.find_element_by_xpath(self.SEC_TEXT_PATH).send_keys(second_text)
 
@@ -125,7 +136,13 @@ class QuestionForm(Component):
 class AskTop(Component):
     ASK_QUESTION_BUTTON = '//span[text()="Спросить"]'
 
+    def wait_element(self, element):
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.presence_of_element_located((By.XPATH, element))
+        )
+
     def ask_question_button(self):
+        self.wait_element(self.ASK_QUESTION_BUTTON)
         self.driver.find_element_by_xpath(self.ASK_QUESTION_BUTTON).click()
         self.driver.switch_to_window(self.driver.window_handles[-1])
         return self.driver.current_url
@@ -143,6 +160,11 @@ class AuthForm(Component):
             expected_conditions.presence_of_element_located((By.XPATH, element))
         )
 
+    def wait_element_of_click(self, element):
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.element_to_be_clickable((By.XPATH, element))
+        )
+
     def open_form(self):
         self.driver.find_element_by_xpath(self.LOGIN_BUTTON).click()
         wait = WebDriverWait(self.driver, 5)
@@ -156,6 +178,7 @@ class AuthForm(Component):
         self.driver.find_element_by_xpath(self.PASSWORD).send_keys(pwd)
 
     def submit(self):
+        self.wait_element(self.SUBMIT)
         self.driver.find_element_by_xpath(self.SUBMIT).click()
 
 
@@ -188,8 +211,18 @@ class MyRoom(Component):
 
     ACTIVITY_BUTTON = '//a[text()="Активность"]'
 
-    def go_to_my_world(self):
+    def wait_element(self, element):
+        WebDriverWait(self.driver, 30).until(
+            expected_conditions.presence_of_element_located((By.XPATH, element))
+        )
 
+    def wait_element_of_click(self, element):
+        WebDriverWait(self.driver, 30).until(
+            expected_conditions.element_to_be_clickable((By.XPATH, element))
+        )
+
+    def go_to_my_world(self):
+        self.wait_element_of_click(self.MY_WORLD_BUTTON)
         self.driver.find_element_by_xpath(self.MY_WORLD_BUTTON).click()
         self.driver.switch_to_window(self.driver.window_handles[-1])
         return WebDriverWait(self.driver, 50, 0.1).until(
@@ -197,27 +230,28 @@ class MyRoom(Component):
         )
 
     def go_to_photos(self):
-
+        self.wait_element_of_click(self.MY_PHOTOS_BUTTON)
         self.driver.find_element_by_xpath(self.MY_PHOTOS_BUTTON).click()
-
         self.driver.switch_to_window(self.driver.window_handles[-1])
         return WebDriverWait(self.driver, 50, 0.1).until(
             lambda d: d.find_element_by_xpath(self.MY_WORLD_TITLE).get_attribute('href')
         )
 
     def go_to_videos(self):
+        self.wait_element_of_click(self.MY_VIDEOS_BUTTON)
         self.driver.find_element_by_xpath(self.MY_VIDEOS_BUTTON).click()
-
         self.driver.switch_to_window(self.driver.window_handles[-1])
         return WebDriverWait(self.driver, 50, 0.1).until(
             lambda d: d.find_element_by_xpath(self.MY_VIDEOS_TITLE).get_attribute('href')
         )
 
     def press_settings(self):
+        self.wait_element_of_click(self.SETINGS_BUTTON)
         self.driver.find_element_by_xpath(self.SETINGS_BUTTON).click()
         return self.driver.current_url
 
     def press_activity(self):
+        self.wait_element_of_click(self.ACTIVITY_BUTTON)
         self.driver.find_element_by_xpath(self.ACTIVITY_BUTTON).click()
         return self.driver.current_url
 
