@@ -46,7 +46,7 @@ class SimpleTest(TestCase):
 
 
     def setUp(self):
-        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
+        browser = os.environ.get('TTHA2BROWSER', 'FIREFOX')
 
         self.driver = Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
@@ -60,38 +60,59 @@ class SimpleTest(TestCase):
         self.driver.quit()
 
 
-
-    # проверяем добовляется ли вопрос во вкладке подписки и роботоспособность всех кнопок перехода
-    def test_add_subscribe_question(self):
-        subsc_question_page = QuestionSubscribe(self.driver, PATH=self.question_subscribe_path)
-        subsc_question_page.open()
-
-        self.auth_of_user(subsc_question_page)
-
-        subsc_button = subsc_question_page.subscribe_question_top_form
-        subsc_button.add_subscribe_on_question()
-
-        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-        my_room_page.open()
-
-        cent_form = my_room_page.center_form
-        cent_form.go_subsc_question_form()
-        href = cent_form.go_subsc_questions()
-
-        self.assertEquals('https://otvet.mail.ru/' + self.question_subscribe_path, href)
-
-    # проверяем проподает ли вопрос из вкладки при отписке
-    def test_delete_subscribe_question(self):
-        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    # проверяем добовление пользователя во вкладке подписке, при подписке на него
+    def test_add_subscribe_user(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.SECOND_PROFILE_ID)
         my_room_page.open()
 
         self.auth_of_user(my_room_page)
+        my_room = my_room_page.my_room
+        my_room.subsc_on_user()
+
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
 
         cent_form = my_room_page.center_form
         cent_form.go_subsc_question_form()
-        cent_form.delete_subsc_quest()
-        answer = cent_form.is_it_del()
-        self.assertEquals(answer, True)
+        cent_form.open_subsc_user_list()
+        result = cent_form.find_subsc_user()
+        self.assertEquals(result, True)
+
+
+
+
+
+    # проверяем добовляется ли вопрос во вкладке подписки и роботоспособность всех кнопок перехода
+    # def test_add_subscribe_question(self):
+    #     subsc_question_page = QuestionSubscribe(self.driver, PATH=self.question_subscribe_path)
+    #     subsc_question_page.open()
+    #
+    #     self.auth_of_user(subsc_question_page)
+    #
+    #     subsc_button = subsc_question_page.subscribe_question_top_form
+    #     subsc_button.add_subscribe_on_question()
+    #
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     cent_form = my_room_page.center_form
+    #     cent_form.go_subsc_question_form()
+    #     href = cent_form.go_subsc_questions()
+    #
+    #     self.assertEquals('https://otvet.mail.ru/' + self.question_subscribe_path, href)
+
+    # проверяем проподает ли вопрос из вкладки при отписке
+    # def test_delete_subscribe_question(self):
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     self.auth_of_user(my_room_page)
+    #
+    #     cent_form = my_room_page.center_form
+    #     cent_form.go_subsc_question_form()
+    #     cent_form.delete_subsc_quest()
+    #     answer = cent_form.is_it_del()
+    #     self.assertEquals(answer, True)
 
 
 

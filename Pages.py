@@ -112,6 +112,9 @@ class CenterForm(Component):
     DEL_SUBSC_BUTTON = '//button[@title="Отписаться"]'
     QUEST_TABLE = '//div[@class = "page-profile-list"]'
 
+    SUBSC_LIST_USER_BTN = '//a[text()="Пользователи"]'
+    SUBSC_USER = '//a[text()="Лепольд Кот"]'
+
     def wait_element(self, element):
         WebDriverWait(self.driver, 10).until(
             expected_conditions.presence_of_element_located((By.XPATH, element))
@@ -158,6 +161,19 @@ class CenterForm(Component):
             return True
         else:
             return False
+
+    def open_subsc_user_list(self):
+        self.wait_element(self.SUBSC_LIST_USER_BTN)
+        self.driver.find_element_by_xpath(self.SUBSC_LIST_USER_BTN).click()
+
+    def find_subsc_user(self):
+        try:
+            self.wait_element(self.SUBSC_USER)
+            self.driver.find_element_by_xpath(self.SUBSC_USER)
+        except:
+            return False
+        else:
+            return True
 
 
 
@@ -280,6 +296,9 @@ class MyRoom(Component):
 
     ACTIVITY_BUTTON = '//a[text()="Активность"]'
 
+    SUBSC_BUT_AD_USER = '//span[text()="Подписаться"]'
+
+
     def wait_element(self, element):
         WebDriverWait(self.driver, 30).until(
             expected_conditions.presence_of_element_located((By.XPATH, element))
@@ -323,4 +342,13 @@ class MyRoom(Component):
         self.wait_element_of_click(self.ACTIVITY_BUTTON)
         self.driver.find_element_by_xpath(self.ACTIVITY_BUTTON).click()
         return self.driver.current_url
+
+    def subsc_on_user(self):
+        self.wait_element(self.SUBSC_BUT_AD_USER)
+        self.driver.find_element_by_xpath(self.SUBSC_BUT_AD_USER).click()
+
+
+
+
+
 
