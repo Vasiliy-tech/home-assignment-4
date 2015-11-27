@@ -2,6 +2,7 @@
 import urlparse
 import time
 import selenium.webdriver as findmethods
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
@@ -105,7 +106,11 @@ class CenterForm(Component):
     OPEN_BUTTON = '//div[@class="tabs--h"]/a[2]'
 
     SUBSC_QUESTION_FORM = '//div[text()="Подписки"]'
+    SUBSC_QUESTS = '//a[text()="Вопросы"]'
     FIRST_SUBSc_QUEST = '//div[@class="page-profile-list"]/div[1]/a[2]'
+
+    DEL_SUBSC_BUTTON = '//button[@title="Отписаться"]'
+    QUEST_TABLE = '//div[@class = "page-profile-list"]'
 
     def wait_element(self, element):
         WebDriverWait(self.driver, 10).until(
@@ -129,11 +134,32 @@ class CenterForm(Component):
         return self.driver.find_element_by_xpath(self.QUEST_IN_OPEN).get_attribute("href")
 
     def go_subsc_question_form(self):
+        self.wait_element(self.SUBSC_QUESTION_FORM)
         self.driver.find_element_by_xpath(self.SUBSC_QUESTION_FORM).click()
 
     def go_subsc_questions(self):
         self.wait_element(self.FIRST_SUBSc_QUEST)
+        self.driver.find_element_by_xpath(self.SUBSC_QUESTS).click()
         return self.driver.find_element_by_xpath(self.FIRST_SUBSc_QUEST).get_attribute('href')
+
+    def delete_subsc_quest(self):
+        self.wait_element(self.SUBSC_QUESTS)
+        self.driver.find_element_by_xpath(self.SUBSC_QUESTS).click()
+        menu = self.driver.find_element_by_xpath(self.QUEST_TABLE)
+        element = self.driver.find_element_by_xpath(self.DEL_SUBSC_BUTTON)
+        ActionChains(self.driver).move_to_element(menu).click(element).perform()
+
+    def is_it_del(self):
+        try:
+            menu = self.driver.find_element_by_xpath(self.QUEST_TABLE)
+            element = self.driver.find_element_by_xpath(self.DEL_SUBSC_BUTTON)
+            ActionChains(self.driver).move_to_element(menu).click(element).perform()
+        except :
+            return True
+        else:
+            return False
+
+
 
 
 

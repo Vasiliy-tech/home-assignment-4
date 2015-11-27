@@ -9,6 +9,7 @@ __author__ = 'ivansemenov'
 
 class SimpleTest(TestCase):
     question_subscribe_path = 'question/184708481'
+    CENTRE_FORM_SUBSC_QUESR_PATH = 'profile/id207816682/feed/questions'
     #FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
     FIRST_U_PASSWORD = 'testirovanie'
     FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
@@ -45,7 +46,7 @@ class SimpleTest(TestCase):
 
 
     def setUp(self):
-        browser = os.environ.get('TTHA2BROWSER', 'FIREFOX')
+        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
 
         self.driver = Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
@@ -53,13 +54,14 @@ class SimpleTest(TestCase):
         )
 
 
+
     def tearDown(self):
-        #time.sleep(1)
+        time.sleep(1)
         self.driver.quit()
 
 
 
-    # проверяем добовляется ли вопрос во вкладке подписки
+    # проверяем добовляется ли вопрос во вкладке подписки и роботоспособность всех кнопок перехода
     def test_add_subscribe_question(self):
         subsc_question_page = QuestionSubscribe(self.driver, PATH=self.question_subscribe_path)
         subsc_question_page.open()
@@ -77,6 +79,19 @@ class SimpleTest(TestCase):
         href = cent_form.go_subsc_questions()
 
         self.assertEquals('https://otvet.mail.ru/' + self.question_subscribe_path, href)
+
+    # проверяем проподает ли вопрос из вкладки при отписке
+    def test_delete_subscribe_question(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
+
+        self.auth_of_user(my_room_page)
+
+        cent_form = my_room_page.center_form
+        cent_form.go_subsc_question_form()
+        cent_form.delete_subsc_quest()
+        answer = cent_form.is_it_del()
+        self.assertEquals(answer, True)
 
 
 
