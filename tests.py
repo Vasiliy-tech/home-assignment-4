@@ -40,6 +40,16 @@ class SimpleTest(TestCase):
 
         self.driver.switch_to_window(self.driver.window_handles[-1])
 
+    def auth_of_second_user(self, my_room_page):
+
+        auth_form = my_room_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.SECOND_U_EMAIL)
+        auth_form.set_password(self.SECOND_U_PASSWORD)
+        auth_form.submit()
+
+        self.driver.switch_to_window(self.driver.window_handles[-1])
+
     def auth_user_askpage(self, page):
         auth_form = page.auth_form
         auth_form.set_login(self.FIRST_USER_EMAIL)
@@ -65,10 +75,11 @@ class SimpleTest(TestCase):
 
 
     def test_enter_exit(self):
-        my_room_page = MyRoomPage(self.driver, PATH=self.SECOND_PROFILE_ID)
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
 
-        self.auth_of_user(my_room_page)
+        self.auth_of_second_user(my_room_page)
+
         self.exit_user(my_room_page)
 
 

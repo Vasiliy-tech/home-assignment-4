@@ -289,7 +289,8 @@ class AuthForm(Component):
         self.driver.find_element_by_xpath(self.SUBMIT).click()
 
     def exit_user(self):
-        self.wait_element(self.EXIT)
+        wait = WebDriverWait(self.driver, 50)
+        wait.until(expected_conditions.element_to_be_clickable((By.XPATH, self.EXIT)))
         self.driver.find_element_by_xpath(self.EXIT).click()
 
 
