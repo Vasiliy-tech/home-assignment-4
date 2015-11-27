@@ -68,10 +68,18 @@ class AskPage(AnswersPage):
         return QuestionForm(self.driver)
 
 
-class CenterForm(Component):
-    LAST_QUEST = '//div[@class="page-profile-list"]/div[1]/a'
-    QUEST_IN_OPEN = '//div[@class="page-profile-list"]/div[1]/a'
-    OPEN_BUTTON = '//div[@class="tabs--h"]/a[2]'
+class QuestionSubscribe(AnswersPage):
+    @property
+    def auth_form(self):
+        return AuthForm(self.driver)
+
+    @property
+    def subscribe_question_top_form(self):
+        return SubscribeQuestionForm(self.driver)
+
+
+class SubscribeQuestionForm(Component):
+    SUBSC_BUTTON = '//button[@title="Подписаться"]'
 
     def wait_element(self, element):
         WebDriverWait(self.driver, 10).until(
@@ -83,7 +91,33 @@ class CenterForm(Component):
             expected_conditions.element_to_be_clickable((By.XPATH, element))
         )
 
-    def last_quest__all(self):
+    def add_subscribe_on_question(self):
+        self.wait_element_of_click(self.SUBSC_BUTTON)
+        self.driver.find_element_by_xpath(self.SUBSC_BUTTON).click()
+
+
+
+
+
+class CenterForm(Component):
+    LAST_QUEST = '//div[@class="page-profile-list"]/div[1]/a'
+    QUEST_IN_OPEN = '//div[@class="page-profile-list"]/div[1]/a'
+    OPEN_BUTTON = '//div[@class="tabs--h"]/a[2]'
+
+    SUBSC_QUESTION_FORM = '//div[text()="Подписки"]'
+    FIRST_SUBSc_QUEST = '//div[@class="page-profile-list"]/div[1]/a[2]'
+
+    def wait_element(self, element):
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.presence_of_element_located((By.XPATH, element))
+        )
+
+    def wait_element_of_click(self, element):
+        WebDriverWait(self.driver, 30).until(
+            expected_conditions.element_to_be_clickable((By.XPATH, element))
+        )
+
+    def last_quest_in_all(self):
         self.wait_element(self.LAST_QUEST)
         return self.driver.find_element_by_xpath(self.LAST_QUEST).get_attribute("href")
 
@@ -93,6 +127,15 @@ class CenterForm(Component):
     def last_quest_in_open(self):
         self.wait_element(self.QUEST_IN_OPEN)
         return self.driver.find_element_by_xpath(self.QUEST_IN_OPEN).get_attribute("href")
+
+    def go_subsc_question_form(self):
+        self.driver.find_element_by_xpath(self.SUBSC_QUESTION_FORM).click()
+
+    def go_subsc_questions(self):
+        self.wait_element(self.FIRST_SUBSc_QUEST)
+        return self.driver.find_element_by_xpath(self.FIRST_SUBSc_QUEST).get_attribute('href')
+
+
 
 
 class QuestionForm(Component):
@@ -107,11 +150,11 @@ class QuestionForm(Component):
 
     def wait_element(self, element):
         WebDriverWait(self.driver, 30).until(
-            expected_conditions.presence_of_element_located((By.XPATH, element))
+            expected_conditions.presence_of_element_located((By.ID, element))
         )
 
     def set_question(self, question, second_text):
-        #self.wait_element(self.ID_TEXT_AREA)
+        self.wait_element(self.ID_TEXT_AREA)
         self.driver.find_element_by_id(self.ID_TEXT_AREA).send_keys(question)
         self.driver.find_element_by_xpath(self.SEC_TEXT_PATH).send_keys(second_text)
 
@@ -167,7 +210,7 @@ class AuthForm(Component):
 
     def open_form(self):
         self.driver.find_element_by_xpath(self.LOGIN_BUTTON).click()
-        wait = WebDriverWait(self.driver, 5)
+        wait = WebDriverWait(self.driver, 30)
         wait.until(expected_conditions.element_to_be_clickable((By.XPATH, self.SIGNUP)))
 
     def set_login(self, login):

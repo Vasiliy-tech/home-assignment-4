@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 import time
-from Pages import  AskPage, MyRoomPage, AuthPage
+from Pages import  AskPage, MyRoomPage, AuthPage, QuestionSubscribe
 from unittest import TestCase
 from selenium.webdriver import DesiredCapabilities, Remote
 __author__ = 'ivansemenov'
 
 
 class SimpleTest(TestCase):
+    question_subscribe_path = 'question/184708481'
     #FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
     FIRST_U_PASSWORD = 'testirovanie'
     FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
@@ -16,9 +17,10 @@ class SimpleTest(TestCase):
     #SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
     SECOND_U_PASSWORD = 'testirovanie'
     SECOND_U_EMAIL = 'lepold.kot@mail.ru'
+    SECOND_PROFILE_ID = 'profile/id211914728/'
 
-    QUESTION_TEXT = u'можно ли настойку болиголова приготовить на воде-а не на водке ?'
-    SECOND_TEXT = u'красота требуется жертв.'
+    QUESTION_TEXT = u'Любишь мечтать? О чем мечтаешь?'
+    SECOND_TEXT = u'Что тебя больше всего рассмешило за прошедшую неделю/ месяц?'
     CATEGORY_NAME = 'Программирование'
     SUBCATEGORY_NAME = 'JavaScript'
 
@@ -43,7 +45,7 @@ class SimpleTest(TestCase):
 
 
     def setUp(self):
-        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
+        browser = os.environ.get('TTHA2BROWSER', 'FIREFOX')
 
         self.driver = Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
@@ -52,7 +54,33 @@ class SimpleTest(TestCase):
 
 
     def tearDown(self):
+        #time.sleep(1)
         self.driver.quit()
+
+
+
+    # проверяем добовляется ли вопрос во вкладке подписки
+    def test_add_subscribe_question(self):
+        subsc_question_page = QuestionSubscribe(self.driver, PATH=self.question_subscribe_path)
+        subsc_question_page.open()
+
+        self.auth_of_user(subsc_question_page)
+
+        subsc_button = subsc_question_page.subscribe_question_top_form
+        subsc_button.add_subscribe_on_question()
+
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
+
+        cent_form = my_room_page.center_form
+        cent_form.go_subsc_question_form()
+        href = cent_form.go_subsc_questions()
+
+        self.assertEquals('https://otvet.mail.ru/' + self.question_subscribe_path, href)
+
+
+
+
 
 
     # def test_ask_question(self):
@@ -88,29 +116,29 @@ class SimpleTest(TestCase):
 
 
 
-    def test_ask_question_button(self):
-        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-        my_room_page.open()
-
-        self.auth_of_user(my_room_page)
-
-        my_room = my_room_page.top_ask_question
-        url = my_room.ask_question_button()
-        self.assertEquals(url, 'https://otvet.mail.ru/ask')
+    # def test_ask_question_button(self):
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     self.auth_of_user(my_room_page)
+    #
+    #     my_room = my_room_page.top_ask_question
+    #     url = my_room.ask_question_button()
+    #     self.assertEquals(url, 'https://otvet.mail.ru/ask')
+    # #
+    # #
+    # #
+    # def test_go_to_MyWorld(self):
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
     #
     #
+    #     self.auth_of_user(my_room_page)
     #
-    def test_go_to_MyWorld(self):
-        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-        my_room_page.open()
-
-
-        self.auth_of_user(my_room_page)
-
-        my_room = my_room_page.my_room
-        href = my_room.go_to_my_world()
-        self.assertEquals(href, 'http://my.mail.ru/')
-    #
+    #     my_room = my_room_page.my_room
+    #     href = my_room.go_to_my_world()
+    #     self.assertEquals(href, 'http://my.mail.ru/')
+    # #
     #
     # def test_authorization(self):
     #     auth_page = AuthPage(self.driver)
