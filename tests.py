@@ -25,6 +25,10 @@ class SimpleTest(TestCase):
     CATEGORY_NAME = 'Программирование'
     SUBCATEGORY_NAME = 'JavaScript'
 
+    def exit_user(self, page):
+        auth_form = page.auth_form
+        auth_form.exit_user()
+
 
     def auth_of_user(self, my_room_page):
 
@@ -60,42 +64,51 @@ class SimpleTest(TestCase):
         self.driver.quit()
 
 
+    def test_enter_exit(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.SECOND_PROFILE_ID)
+        my_room_page.open()
+
+        self.auth_of_user(my_room_page)
+        self.exit_user(my_room_page)
+
+
+
 
 
 
 
     # проверяем добовление пользователя во вкладке подписке, при подписке на него, не менять местами с нижним тестом
-    def test_add_subscribe_user(self):
-        my_room_page = MyRoomPage(self.driver, PATH=self.SECOND_PROFILE_ID)
-        my_room_page.open()
-
-        self.auth_of_user(my_room_page)
-        my_room = my_room_page.my_room
-        my_room.subsc_on_user()
-
-        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-        my_room_page.open()
-
-        cent_form = my_room_page.center_form
-        cent_form.go_subsc_question_form()
-        cent_form.open_subsc_user_list()
-        result = cent_form.find_subsc_user()
-        self.assertEquals(result, True)
-
-
-    # проверяем удаление пользователя из подписок
-    def test_delete_user_from_subscr(self):
-        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-        my_room_page.open()
-
-        self.auth_of_user(my_room_page)
-
-        cent_form = my_room_page.center_form
-        cent_form.go_subsc_question_form()
-        cent_form.open_subsc_user_list()
-        cent_form.delete_subscr_user()
-        result = cent_form.is_it_del_user()
-        self.assertEquals(result, True)
+    # def test_add_subscribe_user(self):
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.SECOND_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     self.auth_of_user(my_room_page)
+    #     my_room = my_room_page.my_room
+    #     my_room.subsc_on_user()
+    #
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     cent_form = my_room_page.center_form
+    #     cent_form.go_subsc_question_form()
+    #     cent_form.open_subsc_user_list()
+    #     result = cent_form.find_subsc_user()
+    #     self.assertEquals(result, True)
+    #
+    #
+    # # проверяем удаление пользователя из подписок
+    # def test_delete_user_from_subscr(self):
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     self.auth_of_user(my_room_page)
+    #
+    #     cent_form = my_room_page.center_form
+    #     cent_form.go_subsc_question_form()
+    #     cent_form.open_subsc_user_list()
+    #     cent_form.delete_subscr_user()
+    #     result = cent_form.is_it_del_user()
+    #     self.assertEquals(result, True)
 
 
 

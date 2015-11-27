@@ -260,14 +260,15 @@ class AuthForm(Component):
     SIGNUP = '//span[text()="Регистрация"]'
     SUBMIT = '//input[@value="Войти"]'
     LOGIN_BUTTON = '//a[text()="Вход"]'
+    EXIT = '//a[text()="выход"]'
 
     def wait_element(self, element):
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 50).until(
             expected_conditions.presence_of_element_located((By.XPATH, element))
         )
 
     def wait_element_of_click(self, element):
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 50).until(
             expected_conditions.element_to_be_clickable((By.XPATH, element))
         )
 
@@ -286,6 +287,10 @@ class AuthForm(Component):
     def submit(self):
         self.wait_element(self.SUBMIT)
         self.driver.find_element_by_xpath(self.SUBMIT).click()
+
+    def exit_user(self):
+        self.wait_element(self.EXIT)
+        self.driver.find_element_by_xpath(self.EXIT).click()
 
 
 class TopMenu(Component):
