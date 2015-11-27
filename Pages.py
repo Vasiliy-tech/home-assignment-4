@@ -112,8 +112,13 @@ class CenterForm(Component):
     DEL_SUBSC_BUTTON = '//button[@title="Отписаться"]'
     QUEST_TABLE = '//div[@class = "page-profile-list"]'
 
+
     SUBSC_LIST_USER_BTN = '//a[text()="Пользователи"]'
     SUBSC_USER = '//a[text()="Лепольд Кот"]'
+
+    USER_TABLE = '//div[@class = "page-profile-list"]'
+
+
 
     def wait_element(self, element):
         WebDriverWait(self.driver, 10).until(
@@ -151,6 +156,22 @@ class CenterForm(Component):
         menu = self.driver.find_element_by_xpath(self.QUEST_TABLE)
         element = self.driver.find_element_by_xpath(self.DEL_SUBSC_BUTTON)
         ActionChains(self.driver).move_to_element(menu).click(element).perform()
+
+    def delete_subscr_user(self):
+        self.wait_element(self.SUBSC_USER)
+        menu = self.driver.find_element_by_xpath(self.USER_TABLE)
+        element = self.driver.find_element_by_xpath(self.DEL_SUBSC_BUTTON)
+        ActionChains(self.driver).move_to_element(menu).click(element).perform()
+
+    def is_it_del_user(self):
+        try:
+            menu = self.driver.find_element_by_xpath(self.USER_TABLE)
+            element = self.driver.find_element_by_xpath(self.DEL_SUBSC_BUTTON)
+            ActionChains(self.driver).move_to_element(menu).click(element).perform()
+        except :
+            return True
+        else:
+            return False
 
     def is_it_del(self):
         try:
@@ -300,12 +321,12 @@ class MyRoom(Component):
 
 
     def wait_element(self, element):
-        WebDriverWait(self.driver, 30).until(
+        WebDriverWait(self.driver, 50).until(
             expected_conditions.presence_of_element_located((By.XPATH, element))
         )
 
     def wait_element_of_click(self, element):
-        WebDriverWait(self.driver, 30).until(
+        WebDriverWait(self.driver, 50).until(
             expected_conditions.element_to_be_clickable((By.XPATH, element))
         )
 
@@ -344,7 +365,7 @@ class MyRoom(Component):
         return self.driver.current_url
 
     def subsc_on_user(self):
-        self.wait_element(self.SUBSC_BUT_AD_USER)
+        self.wait_element_of_click(self.SUBSC_BUT_AD_USER)
         self.driver.find_element_by_xpath(self.SUBSC_BUT_AD_USER).click()
 
 
