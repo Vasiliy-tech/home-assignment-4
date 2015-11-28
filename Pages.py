@@ -118,10 +118,13 @@ class CenterForm(Component):
 
     USER_TABLE = '//div[@class = "page-profile-list"]'
 
+    SUBSCR_ON_YOU = '//div[text()="Подписчики"]'
+    SUBSCR_ON_YOU_USER = '//a[@title="Лепольд Кот"]'
+
 
 
     def wait_element(self, element):
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 50).until(
             expected_conditions.presence_of_element_located((By.XPATH, element))
         )
 
@@ -196,6 +199,22 @@ class CenterForm(Component):
         else:
             return True
 
+    def go_subsc_on_you_users(self):
+        self.wait_element(self.SUBSCR_ON_YOU)
+        self.driver.find_element_by_xpath(self.SUBSCR_ON_YOU).click()
+
+    def find_subsc_on_you_user(self):
+        try:
+            self.wait_element(self.SUBSCR_ON_YOU_USER)
+            self.driver.find_element_by_xpath(self.SUBSCR_ON_YOU_USER)
+        except:
+            return False
+        else:
+            return True
+
+
+
+
 
 
 
@@ -262,17 +281,23 @@ class AuthForm(Component):
     LOGIN_BUTTON = '//a[text()="Вход"]'
     EXIT = '//a[text()="выход"]'
 
+    SECOND_LOGIN = '//input[@name="Username"]'
+    SECOND_PASSWORD = '//input[@name="Password"]'
+    SECOND_SUBMIT = '//span[text()="Войти"]'
+
+
     def wait_element(self, element):
-        WebDriverWait(self.driver, 50).until(
+        WebDriverWait(self.driver, 30).until(
             expected_conditions.presence_of_element_located((By.XPATH, element))
         )
 
     def wait_element_of_click(self, element):
-        WebDriverWait(self.driver, 50).until(
+        WebDriverWait(self.driver, 30).until(
             expected_conditions.element_to_be_clickable((By.XPATH, element))
         )
 
     def open_form(self):
+        self.wait_element_of_click(self.LOGIN_BUTTON)
         self.driver.find_element_by_xpath(self.LOGIN_BUTTON).click()
         wait = WebDriverWait(self.driver, 30)
         wait.until(expected_conditions.element_to_be_clickable((By.XPATH, self.SIGNUP)))
@@ -282,6 +307,7 @@ class AuthForm(Component):
         self.driver.find_element_by_xpath(self.LOGIN).send_keys(login)
 
     def set_password(self, pwd):
+        self.wait_element(self.PASSWORD)
         self.driver.find_element_by_xpath(self.PASSWORD).send_keys(pwd)
 
     def submit(self):
@@ -292,6 +318,25 @@ class AuthForm(Component):
         wait = WebDriverWait(self.driver, 50)
         wait.until(expected_conditions.element_to_be_clickable((By.XPATH, self.EXIT)))
         self.driver.find_element_by_xpath(self.EXIT).click()
+        self.driver.switch_to_window(self.driver.window_handles[-1])
+
+    def second_open_form(self):
+        self.wait_element_of_click(self.LOGIN_BUTTON)
+        self.driver.find_element_by_xpath(self.LOGIN_BUTTON).click()
+
+    def second_set_login(self, login):
+        self.driver.switch_to_window(self.driver.window_handles[-1])
+        self.wait_element(self.SECOND_LOGIN)
+        self.driver.find_element_by_xpath(self.SECOND_LOGIN).send_keys(login)
+
+    def second_set_password(self, pwd):
+        self.driver.switch_to_frame(self.driver.find_element_by_tag_name("iframe"))
+        self.wait_element(self.SECOND_PASSWORD)
+        self.driver.find_element_by_xpath(self.SECOND_PASSWORD).send_keys(pwd)
+
+    def second_submit(self):
+        self.wait_element(self.SECOND_SUBMIT)
+        self.driver.find_element_by_xpath(self.SECOND_SUBMIT).click()
 
 
 class TopMenu(Component):
@@ -371,7 +416,8 @@ class MyRoom(Component):
         return self.driver.current_url
 
     def subsc_on_user(self):
-        self.wait_element_of_click(self.SUBSC_BUT_AD_USER)
+        wait = WebDriverWait(self.driver, 50)
+        wait.until(expected_conditions.presence_of_element_located((By.XPATH, self.SUBSC_BUT_AD_USER)))
         self.driver.find_element_by_xpath(self.SUBSC_BUT_AD_USER).click()
 
 

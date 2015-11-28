@@ -28,7 +28,16 @@ class SimpleTest(TestCase):
     def exit_user(self, page):
         auth_form = page.auth_form
         auth_form.exit_user()
+        self.driver.switch_to_window(self.driver.window_handles[-1])
 
+    def second_auth(self, page):
+        auth_form = page.auth_form
+        auth_form.second_open_form()
+        auth_form.second_set_login(self.FIRST_USER_EMAIL)
+        auth_form.second_set_password(self.FIRST_U_PASSWORD)
+        auth_form.second_submit()
+
+        self.driver.switch_to_window(self.driver.window_handles[-1])
 
     def auth_of_user(self, my_room_page):
 
@@ -73,14 +82,40 @@ class SimpleTest(TestCase):
         time.sleep(1)
         self.driver.quit()
 
+    #заходим вьорым пользвателем и подписываемся на первого,затем выходим, тест подготовка
+    # def test_enter_sec_us_and_subsc_on_first_user_and_exit(self):
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     self.auth_of_second_user(my_room_page)
+    #
+    #     my_room = my_room_page.my_room
+    #     my_room.subsc_on_user()
+    #
+    #     self.exit_user(my_room_page)
 
-    def test_enter_exit(self):
+
+    # проверяет появляются ли во вкладке на Вас подписанные люди, для корректной работы должен отработать верхний тест
+    def test_have_you_subscr_user(self):
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
 
-        self.auth_of_second_user(my_room_page)
+        self.auth_of_user(my_room_page)
 
-        self.exit_user(my_room_page)
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
+        cent_form = my_room_page.center_form
+        cent_form.go_subsc_on_you_users()
+        result = cent_form.find_subsc_on_you_user()
+        self.assertEquals(result, True)
+
+    # def test_delete_from_list_of_users_subscr_you(self):
+
+
+
+
+
+
 
 
 
