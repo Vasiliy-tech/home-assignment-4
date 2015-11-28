@@ -151,8 +151,8 @@ class CenterForm(Component):
         self.driver.find_element_by_xpath(self.SUBSC_QUESTION_FORM).click()
 
     def go_subsc_questions(self):
-        self.wait_element(self.FIRST_SUBSc_QUEST)
         self.driver.find_element_by_xpath(self.SUBSC_QUESTS).click()
+        self.wait_element(self.FIRST_SUBSc_QUEST)
         return self.driver.find_element_by_xpath(self.FIRST_SUBSc_QUEST).get_attribute('href')
 
     def delete_subsc_quest(self):
@@ -229,13 +229,6 @@ class CenterForm(Component):
             return False
         else:
             return True
-
-
-
-
-
-
-
 
 
 class QuestionForm(Component):
