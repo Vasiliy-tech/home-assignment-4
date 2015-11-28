@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="11151188-69a0-4a21-abd3-1b425fa8398d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pages.py" afterPath="$PROJECT_DIR$/Pages.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests.py" afterPath="$PROJECT_DIR$/tests.py" />
     </list>
     <ignored path="home-assignment-4.iws" />
@@ -18,7 +17,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/home-assignment-4$run_tests.coverage" NAME="run_tests Coverage Results" MODIFIED="1448677877798" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/home-assignment-4$run_tests.coverage" NAME="run_tests Coverage Results" MODIFIED="1448683470902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -29,11 +28,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Pages.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Pages.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Pages.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33333334">
-              <caret line="315" column="8" selection-start-line="315" selection-start-column="8" selection-end-line="315" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="168" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
               <folding>
                 <element signature="e#24#39#0" expanded="true" />
               </folding>
@@ -41,14 +40,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tests.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="tests.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="227" column="22" selection-start-line="227" selection-start-column="22" selection-end-line="227" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.20588236">
+              <caret line="280" column="11" selection-start-line="280" selection-start-column="11" selection-end-line="280" selection-end-column="11" />
               <folding>
                 <element signature="e#24#33#0" expanded="true" />
-                <marker date="1448677860544" expanded="true" signature="8990:9547" placeholder="..." />
+                <marker date="1448683680828" expanded="true" signature="4572:8908" placeholder="..." />
+                <marker date="1448683680828" expanded="true" signature="8926:9359" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -456,7 +456,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="49" y="24" width="1317" height="744" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19590874" sideWeight="0.4728972" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287037" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -464,7 +464,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287037" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39969134" sideWeight="0.49409914" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43055555" sideWeight="0.49409914" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4382716" sideWeight="0.49676898" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3383163" sideWeight="0.5271028" order="2" side_tool="true" content_ui="tabs" />
@@ -533,7 +533,8 @@
           <caret line="65" column="56" selection-start-line="65" selection-start-column="56" selection-end-line="65" selection-end-column="56" />
           <folding>
             <element signature="e#24#33#0" expanded="true" />
-            <marker date="1448677860544" expanded="true" signature="8990:9547" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="4572:8908" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="8926:9359" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -576,7 +577,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#24#33#0" expanded="true" />
-            <marker date="1448677860544" expanded="true" signature="8990:9547" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="4572:8908" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="8926:9359" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -625,7 +627,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#24#33#0" expanded="true" />
-            <marker date="1448677860544" expanded="true" signature="8990:9547" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="4572:8908" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="8926:9359" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -681,7 +684,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#24#33#0" expanded="true" />
-            <marker date="1448677860544" expanded="true" signature="8990:9547" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="4572:8908" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="8926:9359" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -737,7 +741,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#24#33#0" expanded="true" />
-            <marker date="1448677860544" expanded="true" signature="8990:9547" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="4572:8908" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="8926:9359" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -765,7 +770,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#24#33#0" expanded="true" />
-            <marker date="1448677860544" expanded="true" signature="8990:9547" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="4572:8908" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="8926:9359" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -873,14 +879,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/selenium/webdriver/support/wait.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CheckList">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -889,23 +887,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests.py">
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/selenium/webdriver/support/wait.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="227" column="22" selection-start-line="227" selection-start-column="22" selection-end-line="227" selection-end-column="22" />
-          <folding>
-            <element signature="e#24#33#0" expanded="true" />
-            <marker date="1448677860544" expanded="true" signature="8990:9547" placeholder="..." />
-          </folding>
+          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Pages.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="315" column="8" selection-start-line="315" selection-start-column="8" selection-end-line="315" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="168" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
           <folding>
             <element signature="e#24#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20588236">
+          <caret line="280" column="11" selection-start-line="280" selection-start-column="11" selection-end-line="280" selection-end-column="11" />
+          <folding>
+            <element signature="e#24#33#0" expanded="true" />
+            <marker date="1448683680828" expanded="true" signature="4572:8908" placeholder="..." />
+            <marker date="1448683680828" expanded="true" signature="8926:9359" placeholder="..." />
           </folding>
         </state>
       </provider>
