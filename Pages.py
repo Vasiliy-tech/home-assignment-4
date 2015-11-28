@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 import urlparse
-import time
-import selenium.webdriver as findmethods
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -122,7 +120,6 @@ class CenterForm(Component):
     SUBSCR_ON_YOU_USER = '//a[@title="Лепольд Кот"]'
 
     DEL_ON_YOU_SUBSC = '//button[@title="Удалить из подписчиков"]'
-
 
 
     def wait_element(self, element):

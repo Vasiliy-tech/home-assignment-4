@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import time
 from Pages import  AskPage, MyRoomPage, AuthPage, QuestionSubscribe
 from unittest import TestCase
 from selenium.webdriver import DesiredCapabilities, Remote
@@ -10,13 +9,11 @@ __author__ = 'ivansemenov'
 class SimpleTest(TestCase):
     question_subscribe_path = 'question/184708481'
     CENTRE_FORM_SUBSC_QUESR_PATH = 'profile/id207816682/feed/questions'
-    #FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
-    FIRST_U_PASSWORD = 'testirovanie'
+    FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
     FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
     FIRST_PROFILE_ID = 'profile/id207816682/'
 
-    #SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
-    SECOND_U_PASSWORD = 'testirovanie'
+    SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
     SECOND_U_EMAIL = 'lepold.kot@mail.ru'
     SECOND_PROFILE_ID = 'profile/id211914728/'
 
@@ -40,17 +37,14 @@ class SimpleTest(TestCase):
         self.driver.switch_to_window(self.driver.window_handles[-1])
 
     def auth_of_user(self, my_room_page):
-
         auth_form = my_room_page.auth_form
         auth_form.open_form()
         auth_form.set_login(self.FIRST_USER_EMAIL)
         auth_form.set_password(self.FIRST_U_PASSWORD)
         auth_form.submit()
-
         self.driver.switch_to_window(self.driver.window_handles[-1])
 
     def auth_of_second_user(self, my_room_page):
-
         auth_form = my_room_page.auth_form
         auth_form.open_form()
         auth_form.set_login(self.SECOND_U_EMAIL)
@@ -66,7 +60,6 @@ class SimpleTest(TestCase):
         auth_form.submit()
 
         self.driver.switch_to_window(self.driver.window_handles[-1])
-
 
     @classmethod
     def setUpClass(cls):
@@ -102,8 +95,6 @@ class SimpleTest(TestCase):
     def tearDown(self):
         self.driver.quit()
 
-
-
     #проверяет появляются ли во вкладке на Вас подписанные люди, для корректной работы должен отработать верхний тест
     def test_have_you_subscr_user(self):
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
@@ -132,8 +123,6 @@ class SimpleTest(TestCase):
         # в хроме возращает FALSE, в фаерфоксе TRUE - версия для хрома
         self.assertEquals(result, False)
 
-
-
     # проверяем добовление пользователя во вкладке подписке, при подписке на него,
     def test_add_subscribe_user(self):
         my_room_page = MyRoomPage(self.driver, PATH=self.SECOND_PROFILE_ID)
@@ -151,15 +140,11 @@ class SimpleTest(TestCase):
         cent_form.open_subsc_user_list()
         result = cent_form.find_subsc_user()
         self.assertEquals(result, True)
-
-
     # проверяем удаление пользователя из подписок
 
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
-
         #self.auth_of_user(my_room_page)
-
         cent_form = my_room_page.center_form
         cent_form.go_subsc_question_form()
         cent_form.open_subsc_user_list()
@@ -192,9 +177,7 @@ class SimpleTest(TestCase):
 
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
-
         #self.auth_of_user(my_room_page)
-
         cent_form = my_room_page.center_form
         cent_form.go_subsc_question_form()
         cent_form.delete_subsc_quest()
@@ -205,9 +188,7 @@ class SimpleTest(TestCase):
     def test_ask_question_button(self):
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
-
         self.auth_of_user(my_room_page)
-
         my_room = my_room_page.top_ask_question
         url = my_room.ask_question_button()
         self.assertEquals(url, 'https://otvet.mail.ru/ask')
@@ -217,10 +198,7 @@ class SimpleTest(TestCase):
     def test_go_to_MyWorld(self):
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
-
-
         self.auth_of_user(my_room_page)
-
         my_room = my_room_page.my_room
         href = my_room.go_to_my_world()
         self.assertEquals(href, 'http://my.mail.ru/')
@@ -272,11 +250,6 @@ class SimpleTest(TestCase):
         my_room = my_room_page.my_room
         url = my_room.press_settings()
         self.assertEquals(url, 'https://otvet.mail.ru/settings')
-
-
-
-
-
 
     # #хром
     def test_press_activity_button(self):
