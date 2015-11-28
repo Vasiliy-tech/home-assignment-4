@@ -121,6 +121,8 @@ class CenterForm(Component):
     SUBSCR_ON_YOU = '//div[text()="Подписчики"]'
     SUBSCR_ON_YOU_USER = '//a[@title="Лепольд Кот"]'
 
+    DEL_ON_YOU_SUBSC = '//button[@title="Удалить из подписчиков"]'
+
 
 
     def wait_element(self, element):
@@ -165,6 +167,22 @@ class CenterForm(Component):
         menu = self.driver.find_element_by_xpath(self.USER_TABLE)
         element = self.driver.find_element_by_xpath(self.DEL_SUBSC_BUTTON)
         ActionChains(self.driver).move_to_element(menu).click(element).perform()
+
+    def delete_subscr_user_on_you(self):
+        self.wait_element(self.SUBSC_USER)
+        menu = self.driver.find_element_by_xpath(self.USER_TABLE)
+        element = self.driver.find_element_by_xpath(self.DEL_ON_YOU_SUBSC)
+        ActionChains(self.driver).move_to_element(menu).click(element).perform()
+
+    def is_it_del_subscr_user_on_you(self):
+         try:
+             menu = self.driver.find_element_by_xpath(self.USER_TABLE)
+             element = self.driver.find_element_by_xpath(self.DEL_ON_YOU_SUBSC)
+             ActionChains(self.driver).move_to_element(menu).click(element).perform()
+         except:
+             return True
+         else:
+             return False
 
     def is_it_del_user(self):
         try:

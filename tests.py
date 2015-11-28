@@ -82,7 +82,10 @@ class SimpleTest(TestCase):
         time.sleep(1)
         self.driver.quit()
 
+   ####################################################################################################
+
     #заходим вьорым пользвателем и подписываемся на первого,затем выходим, тест подготовка
+
     # def test_enter_sec_us_and_subsc_on_first_user_and_exit(self):
     #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
     #     my_room_page.open()
@@ -93,35 +96,40 @@ class SimpleTest(TestCase):
     #     my_room.subsc_on_user()
     #
     #     self.exit_user(my_room_page)
-
-
-    # проверяет появляются ли во вкладке на Вас подписанные люди, для корректной работы должен отработать верхний тест
-    def test_have_you_subscr_user(self):
-        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-        my_room_page.open()
-
-        self.auth_of_user(my_room_page)
-
-        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-        my_room_page.open()
-        cent_form = my_room_page.center_form
-        cent_form.go_subsc_on_you_users()
-        result = cent_form.find_subsc_on_you_user()
-        self.assertEquals(result, True)
-
+    #
+    #
+    # # проверяет появляются ли во вкладке на Вас подписанные люди, для корректной работы должен отработать верхний тест
+    # def test_have_you_subscr_user(self):
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     self.auth_of_user(my_room_page)
+    #
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #     cent_form = my_room_page.center_form
+    #     cent_form.go_subsc_on_you_users()
+    #     result = cent_form.find_subsc_on_you_user()
+    #     self.assertEquals(result, True)
+    #
+    #
+    # #удаление человека подписаного на вас, должны отработать два верхних теста
     # def test_delete_from_list_of_users_subscr_you(self):
+    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+    #     my_room_page.open()
+    #
+    #     self.auth_of_user(my_room_page)
+    #     cent_form = my_room_page.center_form
+    #     cent_form.go_subsc_on_you_users()
+    #
+    #     cent_form.delete_subscr_user_on_you()
+    #     result = cent_form.is_it_del_subscr_user_on_you()
+    #     self.assertEquals(result, True)
 
 
+    ########################################################################################################
 
-
-
-
-
-
-
-
-
-
+    #######################################################################################################
 
     # проверяем добовление пользователя во вкладке подписке, при подписке на него, не менять местами с нижним тестом
     # def test_add_subscribe_user(self):
@@ -157,10 +165,10 @@ class SimpleTest(TestCase):
     #     self.assertEquals(result, True)
 
 
+    ###############################################################################################
 
 
-
-    # проверяем добовляется ли вопрос во вкладке подписки и роботоспособность всех кнопок перехода,  не менять местами с нижним тестом
+    ##проверяем добовляется ли вопрос во вкладке подписки и роботоспособность всех кнопок перехода,  не менять местами с нижним тестом
     # def test_add_subscribe_question(self):
     #     subsc_question_page = QuestionSubscribe(self.driver, PATH=self.question_subscribe_path)
     #     subsc_question_page.open()
@@ -178,8 +186,8 @@ class SimpleTest(TestCase):
     #     href = cent_form.go_subsc_questions()
     #
     #     self.assertEquals('https://otvet.mail.ru/' + self.question_subscribe_path, href)
-
-    # проверяем проподает ли вопрос из вкладки при отписке
+    #
+    # ##проверяем проподает ли вопрос из вкладки при отписке
     # def test_delete_subscribe_question(self):
     #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
     #     my_room_page.open()
@@ -196,7 +204,7 @@ class SimpleTest(TestCase):
 
 
 
-
+    # при втором запуске просит вводить капчу, тест опубликования вопроса, еще нужно менять тексты вопросов
     # def test_ask_question(self):
     #      ask_page = AskPage(self.driver, PATH='ask')
     #      ask_page.open()
@@ -230,79 +238,78 @@ class SimpleTest(TestCase):
 
 
 
-    # def test_ask_question_button(self):
-    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-    #     my_room_page.open()
-    #
-    #     self.auth_of_user(my_room_page)
-    #
-    #     my_room = my_room_page.top_ask_question
-    #     url = my_room.ask_question_button()
-    #     self.assertEquals(url, 'https://otvet.mail.ru/ask')
-    # #
-    # #
-    # #
-    # def test_go_to_MyWorld(self):
-    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-    #     my_room_page.open()
-    #
-    #
-    #     self.auth_of_user(my_room_page)
-    #
-    #     my_room = my_room_page.my_room
-    #     href = my_room.go_to_my_world()
-    #     self.assertEquals(href, 'http://my.mail.ru/')
-    # #
-    #
-    # def test_authorization(self):
-    #     auth_page = AuthPage(self.driver)
-    #     auth_page.open()
-    #     auth_form = auth_page.form
-    #     auth_form.open_form()
-    #     auth_form.set_login(self.FIRST_USER_EMAIL)
-    #     auth_form.set_password(self.FIRST_U_PASSWORD)
-    #     auth_form.submit()
-    #
-    #     top_menu = auth_page.top_menu
-    #     name = top_menu.get_name()
-    #     print (name)
-    #     self.assertEquals(name, self.FIRST_USER_EMAIL)
-    #
-    #
-    # def test_go_to_photos(self):
-    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-    #     my_room_page.open()
-    #
-    #     self.auth_of_user(my_room_page)
-    #
-    #     my_room = my_room_page.my_room
-    #     href = my_room.go_to_photos()
-    #     self.assertEquals(href, 'http://my.mail.ru/')
-    #
-    #
-    # def test_go_to_videos(self):
-    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-    #     my_room_page.open()
-    #
-    #     self.auth_of_user(my_room_page)
-    #
-    #     my_room = my_room_page.my_room
-    #     href = my_room.go_to_videos()
-    #
-    #     self.assertEquals(href, 'https://my.mail.ru/video')
-    #
-    #
-    # def test_press_settings_button(self):
-    #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
-    #     my_room_page.open()
-    #
-    #     self.auth_of_user(my_room_page)
-    #
-    #     my_room = my_room_page.my_room
-    #     url = my_room.press_settings()
-    #     self.assertEquals(url, 'https://otvet.mail.ru/settings')
+    def test_ask_question_button(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
 
-    # разное поведение в хроме и файерфоксе
+        self.auth_of_user(my_room_page)
+
+        my_room = my_room_page.top_ask_question
+        url = my_room.ask_question_button()
+        self.assertEquals(url, 'https://otvet.mail.ru/ask')
+    #
+    #
+    #
+    def test_go_to_MyWorld(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
+
+
+        self.auth_of_user(my_room_page)
+
+        my_room = my_room_page.my_room
+        href = my_room.go_to_my_world()
+        self.assertEquals(href, 'http://my.mail.ru/')
+    #
+
+    def test_authorization(self):
+        auth_page = AuthPage(self.driver)
+        auth_page.open()
+        auth_form = auth_page.form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = auth_page.top_menu
+        name = top_menu.get_name()
+        self.assertEquals(name, self.FIRST_USER_EMAIL)
+
+
+    def test_go_to_photos(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
+
+        self.auth_of_user(my_room_page)
+
+        my_room = my_room_page.my_room
+        href = my_room.go_to_photos()
+        self.assertEquals(href, 'http://my.mail.ru/')
+
+
+    def test_go_to_videos(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
+
+        self.auth_of_user(my_room_page)
+
+        my_room = my_room_page.my_room
+        href = my_room.go_to_videos()
+
+        self.assertEquals(href, 'https://my.mail.ru/video')
+
+
+    def test_press_settings_button(self):
+        my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
+        my_room_page.open()
+
+        self.auth_of_user(my_room_page)
+
+        my_room = my_room_page.my_room
+        url = my_room.press_settings()
+        self.assertEquals(url, 'https://otvet.mail.ru/settings')
+
+    # #разное поведение в хроме и файерфоксе, версия для хрома, и в хроме не стабильный????
     # def test_press_activity_button(self):
     #     my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
     #     my_room_page.open()
@@ -316,7 +323,7 @@ class SimpleTest(TestCase):
     #     my_room.press_activity()
     #
     #     second_url = self.driver.current_url
-    #     self.assertEquals(first_url.encode(), second_url.encode() + '?from=authpopup')
+    #     self.assertEquals(first_url.encode(), second_url.encode())
 
 
 
