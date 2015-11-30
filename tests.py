@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
-from Pages import  AskPage, MyRoomPage, AuthPage, QuestionSubscribe
+import time
+from Pages import  MyRoomPage, MainPage
 from unittest import TestCase
 from selenium.webdriver import DesiredCapabilities, Remote
 __author__ = 'ivansemenov'
@@ -9,11 +10,14 @@ __author__ = 'ivansemenov'
 class SimpleTest(TestCase):
     question_subscribe_path = 'question/184708481'
     CENTRE_FORM_SUBSC_QUESR_PATH = 'profile/id207816682/feed/questions'
-    FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
+    #FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
+    FIRST_U_PASSWORD = 'testirovanie'
+
     FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
     FIRST_PROFILE_ID = 'profile/id207816682/'
 
-    SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
+    # SECOND_U_PASSWORD = os.environ['TTHA2PASSWORD']
+    SECOND_U_PASSWORD = 'testirovanie'
     SECOND_U_EMAIL = 'lepold.kot@mail.ru'
     SECOND_PROFILE_ID = 'profile/id211914728/'
 
@@ -24,7 +28,7 @@ class SimpleTest(TestCase):
 
     def exit_user(self, page):
         auth_form = page.auth_form
-        auth_form.exit_user()
+        auth_form.logout()
         self.driver.switch_to_window(self.driver.window_handles[-1])
 
     def second_auth(self, page):
@@ -104,7 +108,7 @@ class SimpleTest(TestCase):
 
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
-        cent_form = my_room_page.center_form
+        cent_form = my_room_page.center_block
         cent_form.go_subsc_on_you_users()
         result = cent_form.find_subsc_on_you_user()
         self.assertEquals(result, True)
@@ -115,7 +119,7 @@ class SimpleTest(TestCase):
         my_room_page.open()
 
         #self.auth_of_user(my_room_page)
-        cent_form = my_room_page.center_form
+        cent_form = my_room_page.center_block
         cent_form.go_subsc_on_you_users()
 
         cent_form.delete_subscr_user_on_you()
@@ -135,7 +139,7 @@ class SimpleTest(TestCase):
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
 
-        cent_form = my_room_page.center_form
+        cent_form = my_room_page.center_block
         cent_form.go_subsc_question_form()
         cent_form.open_subsc_user_list()
         result = cent_form.find_subsc_user()
@@ -145,7 +149,7 @@ class SimpleTest(TestCase):
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
         #self.auth_of_user(my_room_page)
-        cent_form = my_room_page.center_form
+        cent_form = my_room_page.center_block
         cent_form.go_subsc_question_form()
         cent_form.open_subsc_user_list()
         cent_form.delete_subscr_user()
@@ -167,7 +171,7 @@ class SimpleTest(TestCase):
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
 
-        cent_form = my_room_page.center_form
+        cent_form = my_room_page.center_block
         cent_form.go_subsc_question_form()
         href = cent_form.go_subsc_questions()
 
@@ -178,7 +182,7 @@ class SimpleTest(TestCase):
         my_room_page = MyRoomPage(self.driver, PATH=self.FIRST_PROFILE_ID)
         my_room_page.open()
         #self.auth_of_user(my_room_page)
-        cent_form = my_room_page.center_form
+        cent_form = my_room_page.center_block
         cent_form.go_subsc_question_form()
         cent_form.delete_subsc_quest()
         answer = cent_form.is_it_del()
@@ -205,9 +209,9 @@ class SimpleTest(TestCase):
 
 
     def test_authorization(self):
-        auth_page = AuthPage(self.driver)
+        auth_page = MainPage(self.driver)
         auth_page.open()
-        auth_form = auth_page.form
+        auth_form = auth_page.auth_form
         auth_form.open_form()
         auth_form.set_login(self.FIRST_USER_EMAIL)
         auth_form.set_password(self.FIRST_U_PASSWORD)
@@ -315,3 +319,130 @@ class SimpleTest(TestCase):
     #     my_room.subsc_on_user()
     #
     #     self.exit_user(my_room_page)
+
+class DebugTest(TestCase):
+
+    FIRST_U_NAME = u'Леопольд Стотч'
+    FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
+    FIRST_U_PASSWORD = 'testirovanie'
+
+    def setUp(self):
+        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
+
+        self.driver = Remote(
+            command_executor='http://127.0.0.1:4444/wd/hub',
+            desired_capabilities=getattr(DesiredCapabilities, browser).copy()
+        )
+
+    def test_simple(self):
+        main_page = MainPage(self.driver)
+        main_page.open()
+
+        auth_form = main_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = main_page.top_menu
+        room_page = top_menu.go_to_my_room()
+        center_block = room_page.center_block
+        count = center_block.get_subscribe_count_questions()
+        print(count)
+        auth_form.logout()
+
+    def tearDown(self):
+        time.sleep(2)
+        self.driver.quit()
+
+
+class AnswersTest(TestCase):
+    FIRST_U_NAME = u'Леопольд Стотч'
+    FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
+    FIRST_U_PASSWORD = 'testirovanie'
+
+    def setUp(self):
+        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
+
+        self.driver = Remote(
+            command_executor='http://127.0.0.1:4444/wd/hub',
+            desired_capabilities=getattr(DesiredCapabilities, browser).copy()
+        )
+
+    def test_vip(self):
+        main_page = MainPage(self.driver,)
+        main_page.open()
+
+        auth_form = main_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = main_page.top_menu
+        room_page = top_menu.go_to_my_room()
+
+        left_block = room_page.left_block
+        left_block.get_vip()
+        self.assertEqual(True, left_block.buy_vip_frame_exist())
+
+        left_block.close_vip()
+        auth_form.logout()
+
+    def test_my_world(self):
+        main_page = MainPage(self.driver)
+        main_page.open()
+
+        auth_form = main_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = main_page.top_menu
+        room_page = top_menu.go_to_my_room()
+        left_block = room_page.left_block
+        href = left_block.go_to_my_world()
+        self.assertEqual(u'http://my.mail.ru/',href)
+        name = left_block.get_name_by_my_world()
+        self.assertEqual(self.FIRST_U_NAME, name)
+        auth_form.logout()
+
+    def test_my_photos(self):
+        main_page = MainPage(self.driver)
+        main_page.open()
+
+        auth_form = main_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = main_page.top_menu
+        room_page = top_menu.go_to_my_room()
+        left_block = room_page.left_block
+        href = left_block.go_to_photos()
+        self.assertEqual(u'http://my.mail.ru/', href)
+        category = left_block.is_photos()
+        self.assertEqual(u'Фотографии', category)
+        auth_form.logout()
+
+    def test_my_videos(self):
+        main_page = MainPage(self.driver)
+        main_page.open()
+
+        auth_form = main_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = main_page.top_menu
+        room_page = top_menu.go_to_my_room()
+        left_block = room_page.left_block
+        href = left_block.go_to_videos()
+        self.assertEqual(True, left_block.is_videos())
+        auth_form.logout()
+
+    def tearDown(self):
+        self.driver.quit()
