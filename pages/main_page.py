@@ -76,6 +76,7 @@ class CenterBlock(Component):
             return True
         return False
 
+
 class TopMenu(Component):
     AVATAR = '//a[starts-with(@title, "Личный кабинет")]'
 

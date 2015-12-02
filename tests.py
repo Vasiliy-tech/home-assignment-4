@@ -1,51 +1,18 @@
 # -*- coding: utf-8 -*-
 import os
-import time
 from pages.main_page import MainPage
 from unittest import TestCase
 from selenium.webdriver import DesiredCapabilities, Remote
 __author__ = 'ivansemenov'
 
 
-class DebugTest(TestCase):
-
-    FIRST_U_NAME = u'Леопольд Стотч'
-    FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
-    FIRST_U_PASSWORD = 'testirovanie'
-
-    def setUp(self):
-        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
-
-        self.driver = Remote(
-            command_executor='http://127.0.0.1:4444/wd/hub',
-            desired_capabilities=getattr(DesiredCapabilities, browser).copy()
-        )
-
-    def test_simple(self):
-        main_page = MainPage(self.driver)
-        main_page.open()
-
-        center_block = main_page.center_block
-
-        question_page = center_block.choose_last_question()
-        question = question_page.question
-
-        question.subscribe()
-
-        self.assertEqual(False, center_block.is_authorizate())
-
-    def tearDown(self):
-        time.sleep(2)
-        self.driver.quit()
-
-
 class AnswersTest(TestCase):
     FIRST_U_NAME = u'Леопольд Стотч'
     FIRST_USER_EMAIL = 'stotch_leopold@inbox.ru'
-    FIRST_U_PASSWORD = 'testirovanie'
+    FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
 
     def setUp(self):
-        browser = os.environ.get('TTHA2BROWSER', 'FIREFOX')
+        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
 
         self.driver = Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
@@ -361,6 +328,18 @@ class AnswersTest(TestCase):
 
         self.assertEqual(False, center_block.is_authorizate())
 
+    def test_not_auth_gift_vip(self):
+        main_page = MainPage(self.driver)
+        main_page.open()
+
+        center_block = main_page.center_block
+
+        another_room = center_block.choose_last_author_quest()
+        left_block = another_room.left_block
+
+        left_block.gift_vip()
+
+        self.assertEqual(False, center_block.is_authorizate())
 
     def tearDown(self):
         self.driver.quit()

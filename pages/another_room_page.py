@@ -12,6 +12,7 @@ class AnotherRoomPage(AnswersPage):
 
 class LeftAnotherRoomBlock(Component):
     SUBCRIBE_USER = '//span[text()="Подписаться"]'
+    GIFT_VIP = '//span[text()="Подарить VIP-статус"]'
 
     def get_user_id(self):
         self.wait_element(self.SUBCRIBE_USER)
@@ -20,3 +21,7 @@ class LeftAnotherRoomBlock(Component):
     def subcribe(self):
         self.wait_element(self.SUBCRIBE_USER)
         self.driver.find_element_by_xpath(self.SUBCRIBE_USER).click()
+
+    def gift_vip(self):
+        self.wait_element(self.GIFT_VIP)
+        self.driver.find_element_by_xpath(self.GIFT_VIP).click()
