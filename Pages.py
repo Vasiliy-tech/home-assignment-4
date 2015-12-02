@@ -14,7 +14,7 @@ class Component(object):
         self.driver = driver
 
     def wait_element(self, element):
-        WebDriverWait(self.driver, 30).until(
+        WebDriverWait(self.driver, 5).until(
             expected_conditions.element_to_be_clickable((By.XPATH, element))
         )
 
@@ -44,6 +44,42 @@ class MainPage(AnswersPage):
     def top_menu(self):
         return TopMenu(self.driver)
 
+    @property
+    def center_block(self):
+        return CenterBlock(self.driver)
+
+
+class CenterBlock(Component):
+    LAST_QUESTION = '//div[@class="pageQuestions"]/div[starts-with(@class,"q--li")]/a[starts-with(@href,"/question/")]'
+    LAST_AUTHOR = '//div[@class="pageQuestions"]/div[starts-with(@class,"q--li")]/a[starts-with(@href,"/profile/")]'
+
+    def choose_last_question(self):
+        self.wait_element(self.LAST_QUESTION)
+        self.driver.find_element_by_xpath(self.LAST_QUESTION).click()
+        return QuestionPage(self.driver)
+
+    def choose_last_author_quest(self):
+        self.wait_element(self.LAST_AUTHOR)
+        self.driver.find_element_by_xpath(self.LAST_AUTHOR).click()
+        return AnotherRoomPage(self.driver)
+
+class AnotherRoomPage(AnswersPage):
+
+    @property
+    def left_block(self):
+        return LeftAnotherRoomBlock(self.driver)
+
+
+class LeftAnotherRoomBlock(Component):
+    SUBCRIBE_USER = '//span[text()="Подписаться"]'
+
+    def get_user_id(self):
+        self.wait_element(self.SUBCRIBE_USER)
+        return self.driver.current_url.split('/')[-2]
+
+    def subcribe(self):
+        self.wait_element(self.SUBCRIBE_USER)
+        self.driver.find_element_by_xpath(self.SUBCRIBE_USER).click()
 
 class MyRoomPage(AnswersPage):
 
@@ -55,6 +91,26 @@ class MyRoomPage(AnswersPage):
     def center_block(self):
         return CenterForm(self.driver)
 
+
+class QuestionPage(AnswersPage):
+
+    @property
+    def question(self):
+        return Question(self.driver)
+
+
+class Question(Component):
+
+    SUBSCRIBE_BUTTON = '//button[@title="Подписаться"]'
+    QUESTION_TITLE = '//index'
+
+    def subscribe(self):
+        self.wait_element(self.SUBSCRIBE_BUTTON)
+        self.driver.find_element_by_xpath(self.SUBSCRIBE_BUTTON).click()
+
+    def get_title(self):
+        self.wait_element(self.QUESTION_TITLE)
+        return self.driver.find_element_by_xpath(self.QUESTION_TITLE).text
 
 class LeftBlock(Component):
     MY_WORLD_BUTTON = '//a[text()="Мой мир"]'
@@ -132,10 +188,61 @@ class LeftBlock(Component):
 
 class CenterForm(Component):
     SUBSCRIBE_COUNT_QUESTIONS = '//span[@title="Вопросов"]'
+    SUBSCRIBE_COUNT_USERS = '//span[@title="Пользователей"]'
+    CHECK_QUESTION = '//a[starts-with(@href,"/question/") and text()="%s"]'
+    CHECK_USER = '//div[a[@href="/profile/%s/" and not(@style)]]'
+    SUBSCRIBE_BUTTON = '//a[./div[text()="Подписки"]]'
+    SUBSCRIBE_QUESTION_BUTTON = '//a[text()="Вопросы"]'
+    SUBSCRIBE_USERS_BUTTON = '//a[text()="Пользователи"]'
+    UNSUBSCRIBE_BUTTON = '//button[@title="Отписаться"]'
 
     def get_subscribe_count_questions(self):
         self.wait_element(self.SUBSCRIBE_COUNT_QUESTIONS)
         return self.driver.find_element_by_xpath(self.SUBSCRIBE_COUNT_QUESTIONS).text
+
+    def get_subscribe_count_users(self):
+        self.wait_element(self.SUBSCRIBE_COUNT_USERS)
+        return self.driver.find_element_by_xpath(self.SUBSCRIBE_COUNT_USERS).text
+
+    def go_to_subcribes_users(self):
+        self.wait_element(self.SUBSCRIBE_BUTTON)
+        self.driver.find_element_by_xpath(self.SUBSCRIBE_BUTTON).click()
+        self.wait_element(self.SUBSCRIBE_USERS_BUTTON)
+        self.driver.find_element_by_xpath(self.SUBSCRIBE_USERS_BUTTON).click()
+
+    def go_to_subcribes_question(self):
+        self.wait_element(self.SUBSCRIBE_BUTTON)
+        self.driver.find_element_by_xpath(self.SUBSCRIBE_BUTTON).click()
+        self.wait_element(self.SUBSCRIBE_QUESTION_BUTTON)
+        self.driver.find_element_by_xpath(self.SUBSCRIBE_QUESTION_BUTTON).click()
+
+    def unsubscribe_question(self, title):
+        self.wait_element(self.CHECK_QUESTION % title)
+        question = self.driver.find_element_by_xpath(self.CHECK_QUESTION % title)
+        hov = ActionChains(self.driver).move_to_element(question)
+        hov.perform()
+        self.driver.find_element_by_xpath(self.UNSUBSCRIBE_BUTTON).click()
+
+    def unsubscribe_user(self, user_id):
+        self.wait_element(self.CHECK_USER % user_id)
+        user = self.driver.find_element_by_xpath(self.CHECK_USER % user_id)
+        hov = ActionChains(self.driver).move_to_element(user)
+        hov.perform()
+        self.driver.find_element_by_xpath(self.UNSUBSCRIBE_BUTTON).click()
+
+    def check_question(self, title):
+        try:
+            self.wait_element(self.CHECK_QUESTION % title)
+        except TimeoutException:
+            return False
+        return True
+
+    def check_user(self, user_id):
+        try:
+            self.wait_element(self.CHECK_USER % user_id)
+        except TimeoutException:
+            return False
+        return True
 
 class QuestionForm(Component):
     ID_TEXT_AREA = 'ask-text'

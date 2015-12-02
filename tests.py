@@ -347,8 +347,21 @@ class DebugTest(TestCase):
         top_menu = main_page.top_menu
         room_page = top_menu.go_to_my_room()
         center_block = room_page.center_block
-        count = center_block.get_subscribe_count_questions()
-        print(count)
+        first_count = center_block.get_subscribe_count_users()
+
+        main_page.open()
+        question_block = main_page.center_block
+        user_room_page = question_block.choose_last_author_quest()
+
+        left_block = user_room_page.left_block
+        user_id = left_block.get_user_id()
+        left_block.subcribe()
+        top_menu.go_to_my_room()
+        center_block.go_to_subcribes_users()
+        center_block.unsubscribe_user(user_id)
+
+        current_count = center_block.get_subscribe_count_users()
+        self.assertEqual(int(first_count), int(current_count))
         auth_form.logout()
 
     def tearDown(self):
@@ -362,7 +375,7 @@ class AnswersTest(TestCase):
     FIRST_U_PASSWORD = 'testirovanie'
 
     def setUp(self):
-        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
+        browser = os.environ.get('TTHA2BROWSER', 'FIREFOX')
 
         self.driver = Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
@@ -442,6 +455,137 @@ class AnswersTest(TestCase):
         left_block = room_page.left_block
         href = left_block.go_to_videos()
         self.assertEqual(True, left_block.is_videos())
+        auth_form.logout()
+
+    def test_subscribe_question(self):
+        main_page = MainPage(self.driver)
+        main_page.open()
+
+        auth_form = main_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = main_page.top_menu
+        room_page = top_menu.go_to_my_room()
+        center_block = room_page.center_block
+        last_count = center_block.get_subscribe_count_questions()
+
+        main_page.open()
+        question_block = main_page.center_block
+        question_page = question_block.choose_last_question()
+
+        question = question_page.question
+        question_title = question.get_title()
+        question.subscribe()
+
+        top_menu.go_to_my_room()
+        under_count = center_block.get_subscribe_count_questions()
+        self.assertEqual(int(under_count)-int(last_count), 1)
+
+        center_block.go_to_subcribes_question()
+
+        self.assertEqual(True, center_block.check_question(question_title))
+
+        center_block.unsubscribe_question(question_title)
+
+        auth_form.logout()
+
+    def test_unsubscribe_question(self):
+        main_page = MainPage(self.driver)
+        main_page.open()
+
+        auth_form = main_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = main_page.top_menu
+        room_page = top_menu.go_to_my_room()
+        center_block = room_page.center_block
+        first_count = center_block.get_subscribe_count_questions()
+
+        main_page.open()
+        question_block = main_page.center_block
+        question_page = question_block.choose_last_question()
+
+        question = question_page.question
+        question_title = question.get_title()
+        question.subscribe()
+
+        top_menu.go_to_my_room()
+
+        center_block.go_to_subcribes_question()
+        center_block.unsubscribe_question(question_title)
+
+        under_count = center_block.get_subscribe_count_questions()
+        self.assertEqual(int(first_count), int(under_count))
+        auth_form.logout()
+
+    def test_subscribe_user(self):
+        main_page = MainPage(self.driver)
+        main_page.open()
+
+        auth_form = main_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = main_page.top_menu
+        room_page = top_menu.go_to_my_room()
+        center_block = room_page.center_block
+        first_count = center_block.get_subscribe_count_users()
+
+        main_page.open()
+        question_block = main_page.center_block
+        user_room_page = question_block.choose_last_author_quest()
+
+        left_block = user_room_page.left_block
+        user_id = left_block.get_user_id()
+        left_block.subcribe()
+        top_menu.go_to_my_room()
+        current_count = center_block.get_subscribe_count_users()
+
+        self.assertEqual(int(current_count)-int(first_count), 1)
+
+        center_block.go_to_subcribes_users()
+
+        self.assertEqual(True, center_block.check_user(user_id))
+
+        center_block.unsubscribe_user(user_id)
+        auth_form.logout()
+
+    def test_unsubscribe_user(self):
+        main_page = MainPage(self.driver)
+        main_page.open()
+
+        auth_form = main_page.auth_form
+        auth_form.open_form()
+        auth_form.set_login(self.FIRST_USER_EMAIL)
+        auth_form.set_password(self.FIRST_U_PASSWORD)
+        auth_form.submit()
+
+        top_menu = main_page.top_menu
+        room_page = top_menu.go_to_my_room()
+        center_block = room_page.center_block
+        first_count = center_block.get_subscribe_count_users()
+
+        main_page.open()
+        question_block = main_page.center_block
+        user_room_page = question_block.choose_last_author_quest()
+
+        left_block = user_room_page.left_block
+        user_id = left_block.get_user_id()
+        left_block.subcribe()
+        top_menu.go_to_my_room()
+        center_block.go_to_subcribes_users()
+        center_block.unsubscribe_user(user_id)
+
+        current_count = center_block.get_subscribe_count_users()
+        self.assertEqual(int(first_count), int(current_count))
         auth_form.logout()
 
     def tearDown(self):
