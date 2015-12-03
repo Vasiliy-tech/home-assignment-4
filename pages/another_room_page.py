@@ -15,13 +15,13 @@ class LeftAnotherRoomBlock(Component):
     GIFT_VIP = '//span[text()="Подарить VIP-статус"]'
 
     def get_user_id(self):
-        self.wait_element(self.SUBCRIBE_USER)
+        self.wait_element_visible(self.SUBCRIBE_USER)
         return self.driver.current_url.split('/')[-2]
 
     def subcribe(self):
-        self.wait_element(self.SUBCRIBE_USER)
+        self.wait_element_click(self.SUBCRIBE_USER)
         self.driver.find_element_by_xpath(self.SUBCRIBE_USER).click()
 
     def gift_vip(self):
-        self.wait_element(self.GIFT_VIP)
+        self.wait_element_click(self.GIFT_VIP)
         self.driver.find_element_by_xpath(self.GIFT_VIP).click()

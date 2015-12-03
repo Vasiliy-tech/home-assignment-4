@@ -12,7 +12,7 @@ class AnswersTest(TestCase):
     FIRST_U_PASSWORD = os.environ['TTHA2PASSWORD']
 
     def setUp(self):
-        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
+        browser = os.environ.get('TTHA2BROWSER', 'FIREFOX')
 
         self.driver = Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',

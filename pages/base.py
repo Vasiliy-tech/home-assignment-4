@@ -11,11 +11,13 @@ class Component(object):
     def __init__(self, driver):
         self.driver = driver
 
-    def wait_element(self, element):
-        WebDriverWait(self.driver, 10).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, element))
-        )
+    def wait_element_click(self, element):
+        waiter = WebDriverWait(self.driver, 20)
+        waiter.until(expected_conditions.element_to_be_clickable((By.XPATH, element)))
 
+    def wait_element_visible(self, element):
+        waiter = WebDriverWait(self.driver, 20)
+        waiter.until(expected_conditions.visibility_of_element_located((By.XPATH, element)))
 
 class AnswersPage(object):
     PATH = ''
